@@ -1,9 +1,9 @@
 /*
 
-  C grammar defintion for use with JavaCC
+  JavaCC.C grammar defintion for use with JavaCC
   Contributed by Doug South (dsouth@squirrel.com.au) 21/3/97
 
-  This parser assumes that the C source file has been preprocessed : all
+  This parser assumes that the JavaCC.C source file has been preprocessed : all
   #includes have been included and all macros have been expanded. I accomplish
   this with "gcc -P -E <source file> > <output file>".
 
@@ -17,10 +17,10 @@
   This grammar also prints out all the types defined while parsing the file. This
   is done via a call to printTypes() when the parser is complete. If you do not want
   this, just comment out the printTypes() method call in the production rule
-  TranslationUnit(), which BTW is the root node for parsing a C source file.
+  TranslationUnit(), which BTW is the root node for parsing a JavaCC.C source file.
 
   I have not in anyway extensively tested this grammar, in fact it is barely tested,
-  but I imagine it is better to have a starting point for a C grammar other than from
+  but I imagine it is better to have a starting point for a JavaCC.C grammar other than from
   scratch. It has not been optimized in anyway, my main aim was to get a parser that
   works. Lookahead may not be optimum at choice points and may even be insufficient at
   times. I choose to err on the side of not optimum if I made a choice at all.
@@ -32,13 +32,13 @@
 
   TODO:
 
-    Insert the appropriate code to enable C source trees from this grammar.
+    Insert the appropriate code to enable JavaCC.C source trees from this grammar.
 
 =============================================
 3/2/06: Modified by Tom Copeland
 - STRING_LITERAL now handles embedded escaped newlines, thanks to J.Chris Findlay for the patch
 - Works with JavaCC 4.0
-- Preprocessor directives are now simply SKIP'd, so no need to run C files through GCC first
+- Preprocessor directives are now simply SKIP'd, so no need to run JavaCC.C files through GCC first
 
   */
 
@@ -84,32 +84,32 @@ import java.util.*;
 	    types.add("__signed");
 
       if(args.length == 0){
-        System.out.println("C Parser Version 0.1Alpha:  Reading from standard input . . .");
+        System.out.println("JavaCC.C Parser Version 0.1Alpha:  Reading from standard input . . .");
         parser = new CParser(System.in);
       }
       else if(args.length == 1){
-        System.out.println("C Parser Version 0.1Alpha:  Reading from file " + args[0] + " . . ." );
+        System.out.println("JavaCC.C Parser Version 0.1Alpha:  Reading from file " + args[0] + " . . ." );
       try {
         parser = new CParser(new java.io.FileInputStream(args[0]));
       }
       catch(java.io.FileNotFoundException e){
-        System.out.println("C Parser Version 0.1:  File " + args[0] + " not found.");
+        System.out.println("JavaCC.C Parser Version 0.1:  File " + args[0] + " not found.");
         return ;
         }
       }
       else {
-        System.out.println("C Parser Version 0.1Alpha:  Usage is one of:");
-        System.out.println("         java C.CParser < inputfile");
+        System.out.println("JavaCC.C Parser Version 0.1Alpha:  Usage is one of:");
+        System.out.println("         java JavaCC.C.CParser < inputfile");
         System.out.println("OR");
-        System.out.println("         java C.CParser inputfile");
+        System.out.println("         java JavaCC.C.CParser inputfile");
         return ;
       }
       try {
         parser.TranslationUnit();
-        System.out.println("C Parser Version 0.1Alpha:  Java program parsed successfully.");
+        System.out.println("JavaCC.C Parser Version 0.1Alpha:  Java program parsed successfully.");
       }
       catch(ParseException e){
-        System.out.println("C Parser Version 0.1Alpha:  Encountered errors during parse.");
+        System.out.println("JavaCC.C Parser Version 0.1Alpha:  Encountered errors during parse.");
         e.printStackTrace();
       }
     }
