@@ -9,4 +9,6 @@ public class Tag {
     public final static int KEYWORD = 1;
 
     public final static int IDENTIFIER = 2;
+
+    //public final static int Symbol = 3;
 }
