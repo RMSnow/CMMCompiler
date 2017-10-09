@@ -1,7 +1,6 @@
 package Lexer;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * 词法分析程序的入口
@@ -12,44 +11,40 @@ public class LexerEntry {
         guidance();
         Lexer lexer = new Lexer();
 
-//        for(;;){
-//            Token token = lexer.scan();
-//            if(token instanceof Num){
-//                System.out.printf("<NUM, "+((Num) token).value+"> ");
-//            }else if(token instanceof Word){
-//                if(token.tag == Tag.KEYWORD){
-//                    System.out.printf("<KEYWORD, \""+((Word) token).lexeme+"\"> ");
-//                }else{
-//                    System.out.printf("<IDENTIFIER, \""+((Word) token).lexeme+"\"> ");
-//                }
-//            }else{
-//                //System.out.printf("<"+(char)token.tag+"> ");
-//                //continue;
-//            }
-//        }
-
-        Token token = lexer.scan();
-        if(token == null){
-            System.out.println("ERROR");
-        }
-
-        if(token instanceof Num){
-            System.out.printf("<NUM, "+((Num) token).value+"> ");
-        }else if(token instanceof Word){
-            if(token.tag == Tag.KEYWORD){
-                System.out.printf("<KEYWORD, \""+((Word) token).lexeme+"\"> ");
-            }else{
-                System.out.printf("<IDENTIFIER, \""+((Word) token).lexeme+"\"> ");
+        //键盘输入
+        for(int line = 0;;line++){
+            Token token = lexer.scan();
+            if(token == null){
+                System.out.println("ERROR");
+                return;
             }
-        }else if(token instanceof BinaryOperator){
-            System.out.printf("<\""+((BinaryOperator) token).operator+"\"> ");
-        }else{
-            System.out.printf("<\""+(char)token.tag+"\"> ");
+
+            if(token instanceof Num){
+                System.out.printf("<NUM, "+((Num) token).value+"> ");
+            }else if(token instanceof Word){
+                if(token.tag == Tag.KEYWORD){
+                    System.out.printf("<KEYWORD, "+((Word) token).lexeme+"> ");
+                }else{
+                    System.out.printf("<IDENTIFIER, "+((Word) token).lexeme+"> ");
+                }
+            }else if(token instanceof BinaryOperator){
+                System.out.printf("< "+((BinaryOperator) token).operator+" > ");
+            }else{
+                System.out.printf("< "+(char)token.tag+" > ");
+            }
+
+            if(line == 5){
+                System.out.println();
+                line=0;
+            }
         }
 
 
-//        String s = ">=";
-//        System.out.print(s.length());
+//        char c = '>';
+//        String s = String.valueOf(c);
+//        c = '=';
+//        s += String.valueOf(c);
+//        System.out.print(s);
 
 //        InputStream in = System.in;
 //        int a = in.read();
@@ -73,6 +68,12 @@ public class LexerEntry {
 
 /*
 测试用例：
+1.无浮点数、无注释时
+    //（1）各个符号单个输入
+    if,else,while,read,write,int,real
+    +,-,*,/,=,<,>,==,<=,>=,<>,{,},[,]
+
+    //（2）语句（有空白与无空白）
     int a, b;
     real[] r;
     a = 1;
@@ -82,7 +83,7 @@ public class LexerEntry {
     while(a < b){
         if(a == 3){
             r[3] = 3;
-        }else if(a == 5){
+        }else if(a >= 5){
             r[5] = 5;
         }else{
             r[7] = (a * 3) - (b / 3);
@@ -93,4 +94,9 @@ public class LexerEntry {
     write(a, b, r);
 
     #
+
+    //（3）出错处理
+    a. 不正确的标识符，如_a，1a，a1b_
+    b. 未知单目符号，如$,@
+
  */
