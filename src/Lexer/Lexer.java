@@ -7,7 +7,7 @@ import java.util.Hashtable;
  * 词法分析程序
  */
 public class Lexer {
-    public int line = 1;        //对输入行计数
+    public int line = 1;        //对输入行计数---------------------------------
     private char peek = ' ';        //存放下一个输入字符
     private Hashtable words = new Hashtable();
     private Hashtable symbols = new Hashtable();
@@ -40,10 +40,6 @@ public class Lexer {
         //单目关系运算符
         symbols.put(">", new Token('>'));
         symbols.put("<", new Token('<'));
-        //symbols.put(">=", new Token(Tag.Symbol));
-        //symbols.put("<=", new Token(Tag.Symbol));
-        //symbols.put("==", new Token(Tag.Symbol));
-        //symbols.put("<>", new Token(Tag.Symbol));
 
         //界符
         symbols.put("(", new Token('('));
@@ -53,6 +49,12 @@ public class Lexer {
         symbols.put("[", new Token('['));
         symbols.put("]", new Token(']'));
         symbols.put(";", new Token(';'));
+
+        //双目关系运算符
+        symbols.put(">=", new BinaryOperator(Tag.BINARY_OPERATOR, ">="));
+        symbols.put("<=", new BinaryOperator(Tag.BINARY_OPERATOR, "<="));
+        symbols.put("==", new BinaryOperator(Tag.BINARY_OPERATOR, "=="));
+        symbols.put("<>", new BinaryOperator(Tag.BINARY_OPERATOR, "<>"));
 
         //注释------------------------------------------
     }
@@ -84,11 +86,11 @@ public class Lexer {
 
             //异常处理(不包括注释)----------------------------------------
             Token t = (Token)symbols.get(String.valueOf(peek));
-            //当Num词法单元正确时，其后面的字符为空格、制表符、换行符、特殊符号或注释
+            //当Num词法单元正确时，其后面的字符为空格、制表符、【换行符】？、特殊符号或注释
             if(peek == ' ' || peek == '\t' || peek == '\n' || t != null)
                 return new Num(v);
             else{
-                ExceptionHandle.NumException();
+                ExceptionHandle.numException();
                 return null;
             }
         }
@@ -106,13 +108,13 @@ public class Lexer {
             //判断最后一个字符是否为下划线
             char c = s.charAt(s.length()-1);
             if(c == '_'){
-                ExceptionHandle.IdentifierException();
+                ExceptionHandle.identifierException();
                 return null;
             }
 
             //异常处理（不包括注释）-----------------------------------------------
             Token t = (Token)symbols.get(String.valueOf(peek));
-            //当Word词法单元正确时，其后面的字符为空格、制表符、换行符、特殊符号或注释
+            //当Word词法单元正确时，其后面的字符为空格、制表符、【换行符】？、特殊符号或注释
             if(peek == ' ' || peek == '\t' || peek == '\n' || t != null){
                 //词法单元为关键字
                 Word w = (Word)words.get(s);
@@ -124,18 +126,59 @@ public class Lexer {
                 words.put(s, w);
                 return  w;
             }else{
-                ExceptionHandle.IdentifierException();
+                ExceptionHandle.identifierException();
                 return null;
             }
         }
 
-        //若遇到下划线------------------------------------------------
+        //处理下划线
+        if(peek == '_'){
+            ExceptionHandle.identifierException();
+            return null;
+        }
 
+        //当程序运行至此处时，说明遇到了特殊符号-----------?????在此处出错
+        Token t = (Token) symbols.get(String.valueOf(peek));
+        String test = String.valueOf(peek);
+        if(t == null){      //未定义的符号
+            ExceptionHandle.unknownSymbolException();
+            return null;
+        }
+        //判断是否为双目运算符
+        StringBuffer b = new StringBuffer();
+        do{
+            b.append(peek);
+            peek = (char) System.in.read();
+            t = (Token) symbols.get(String.valueOf(peek));
+        }while(t != null);
 
-        //处理单目的特殊符号，存在问题------------------------------------------
-        Token t = new Token(peek);
+        String s = b.toString();
+        if(s.length() == 1){
+            //当符号词法单元正确时，其后面的字符为空格、制表符、【换行符】？、或注释
+            if(peek == ' ' || peek == '\t' || peek == '\n'){
+                return new Token(s.charAt(s.length()-1));
+            }else{
+                ExceptionHandle.symbolException();
+                return null;
+            }
+        }else if(s.length() == 2){
+            BinaryOperator binaryOperator = (BinaryOperator)symbols.get(s);
+
+            //当符号词法单元正确时，其后面的字符为空格、制表符、【换行符】？、或注释
+            if((peek == ' ' || peek == '\t' || peek == '\n') && binaryOperator != null)
+                return binaryOperator;
+            else{
+                ExceptionHandle.symbolException();
+                return null;
+            }
+        }else{
+            ExceptionHandle.unknownSymbolException();
+            return null;
+        }
+
+        //Token t = new Token(peek);
         //peek = ' ';
-        return t;
+        //return t;
     }
 }
 
@@ -154,4 +197,9 @@ public class Lexer {
 1. char与int
 2. 注意，对String来说，=，与compare
 3. 异常处理：用try
+
+遇到耗时的地方/设计的地方
+0. 整个框架的设计：为什么扫描函数scan要返回Token，而不直接用String打印出来
+1. 双目运算符的设计：如何存储，如何打印
+
  */

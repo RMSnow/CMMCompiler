@@ -1,6 +1,7 @@
 package Lexer;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * 词法分析程序的入口
@@ -28,6 +29,10 @@ public class LexerEntry {
 //        }
 
         Token token = lexer.scan();
+        if(token == null){
+            System.out.println("ERROR");
+        }
+
         if(token instanceof Num){
             System.out.printf("<NUM, "+((Num) token).value+"> ");
         }else if(token instanceof Word){
@@ -36,17 +41,23 @@ public class LexerEntry {
             }else{
                 System.out.printf("<IDENTIFIER, \""+((Word) token).lexeme+"\"> ");
             }
+        }else if(token instanceof BinaryOperator){
+            System.out.printf("<\""+((BinaryOperator) token).operator+"\"> ");
         }else{
-            System.out.printf("<"+(char)token.tag+"> ");
+            System.out.printf("<\""+(char)token.tag+"\"> ");
         }
 
 
-        /*Test
-        char c1 = '-';
-        int a = c1;
-        System.out.println(a);
-        char c2 = (char) a;
-        System.out.println(c2);*/
+//        String s = ">=";
+//        System.out.print(s.length());
+
+//        InputStream in = System.in;
+//        int a = in.read();
+//        System.out.println(a);
+//        a = in.read();
+//        System.out.println(a);
+//        a = in.read();
+//        System.out.println(a);
 
 
     }
