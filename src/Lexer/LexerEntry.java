@@ -1,5 +1,9 @@
 package Lexer;
 
+import Lexer.Token.*;
+import Lexer.CharStream.*;
+
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -9,11 +13,47 @@ public class LexerEntry {
 
     public static void main(String[] args) throws IOException {
         guidance();
-        Lexer lexer = new Lexer();
+
+        if (args.length != 2 || (args[0].equals("scan") != true)) {
+            System.out.println("INVALID USAGE.");
+            return;
+        }
 
         //键盘输入
+        if (args[1].equals("#")) {
+            keyboardInput();
+            return;
+        }
+
+        //文件输入
+        File file = new File(args[1]);
+        if (file.exists() != true){
+            System.out.println("THE FILE " + args[1] + " DOES NOT EXIST.");
+            return;
+        }
+        fileInput(file);
+        return;
+    }
+
+    /**
+     * 操作说明
+     */
+    public static void guidance() {
+        System.out.println("------------------------使用方法------------------------");
+        System.out.println("1.键盘输入：输入命令\"scan #\"后，在键盘输入代码，\"#\"为输入结束符");
+        System.out.println("2.读取文件：输入命令\"scan [文件名]\"，如：scan test.txt");
+        System.out.println("-------------------------------------------------------");
+    }
+
+    /**
+     * 键盘输入
+     *
+     * @throws IOException
+     */
+    public static void keyboardInput() throws IOException {
+        Lexer lexer = new Lexer();
         for (; ; ) {
-            Token token = lexer.scan();
+            Token token = lexer.scan(new ConsoleCharStream(), null);
 
             if (token == null) {
                 System.out.println("ERROR");
@@ -28,31 +68,49 @@ public class LexerEntry {
                 return;
             }
 
-            if (token instanceof Num) {
-                System.out.printf("<NUM, " + ((Num) token).value + "> ");
-            } else if (token instanceof RealNum) {
-                System.out.printf("<REAL_NUM, " + ((RealNum) token).number.value
-                        + "." + ((RealNum) token).fraction.value + "> ");
-            } else if (token instanceof Word) {
-                if (token.tag == Tag.KEYWORD) {
-                    System.out.printf("<KEYWORD, " + ((Word) token).lexeme + "> ");
-                } else {
-                    System.out.printf("<IDENTIFIER, " + ((Word) token).lexeme + "> ");
-                }
-            } else if (token instanceof BinaryOperator) {
-                System.out.printf("< " + ((BinaryOperator) token).operator + " > ");
-            } else {
-                System.out.printf("< " + (char) token.tag + " > ");
-            }
+            tokenOutput(token);
         }
     }
 
-    //操作说明
-    public static void guidance() {
-        System.out.println("------------------------使用方法------------------------");
-        System.out.println("1.键盘输入：输入命令\"scan #\"后，在键盘输入代码");
-        System.out.println("2.读取文件：输入命令\"scan [文件名]\"，如：scan test.txt");
-        System.out.println("-------------------------------------------------------");
+    public static void fileInput(File file) throws IOException {
+        Lexer lexer = new Lexer();
+        for (; ; ) {
+            Token token = lexer.scan(new FileCharStream(), file);
+
+            if (token == null) {
+                System.out.println("ERROR");
+                return;
+            }
+
+            if (token.tag == Tag.ANNOTATION)
+                continue;
+
+            if (token.tag == Tag.END) {
+                System.out.println("Has finished the lexical analysis successfully!");
+                return;
+            }
+
+            tokenOutput(token);
+        }
+    }
+
+    public static void tokenOutput(Token token){
+        if (token instanceof Num) {
+            System.out.printf("<NUM, " + ((Num) token).value + "> ");
+        } else if (token instanceof RealNum) {
+            System.out.printf("<REAL_NUM, " + ((RealNum) token).number.value
+                    + "." + ((RealNum) token).fraction.value + "> ");
+        } else if (token instanceof Word) {
+            if (token.tag == Tag.KEYWORD) {
+                System.out.printf("<KEYWORD, " + ((Word) token).lexeme + "> ");
+            } else {
+                System.out.printf("<IDENTIFIER, " + ((Word) token).lexeme + "> ");
+            }
+        } else if (token instanceof BinaryOperator) {
+            System.out.printf("< " + ((BinaryOperator) token).operator + " > ");
+        } else {
+            System.out.printf("< " + (char) token.tag + " > ");
+        }
     }
 }
 

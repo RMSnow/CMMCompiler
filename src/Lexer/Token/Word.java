@@ -1,4 +1,4 @@
-package Lexer;
+package Lexer.Token;
 
 /**
  * 标识符与关键字
