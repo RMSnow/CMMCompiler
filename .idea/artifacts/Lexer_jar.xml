@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Lexer:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Lexer_jar</output-path>
+    <root id="archive" name="CMM.jar">
+      <element id="module-output" name="CMM" />
+    </root>
+  </artifact>
+</component>

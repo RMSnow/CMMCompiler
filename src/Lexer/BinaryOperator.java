@@ -1,13 +1,13 @@
 package Lexer;
 
 /**
- * Created by snow on 09/10/2017.
+ * 二目符号
  */
-public class BinaryOperator extends Token{
+public class BinaryOperator extends Token {
     public final String operator;
 
-    public BinaryOperator(int t, String s){
-        super(t);
+    public BinaryOperator(String s) {
+        super(Tag.BINARY_OPERATOR);
         operator = s;
     }
 }

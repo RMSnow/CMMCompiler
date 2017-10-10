@@ -11,4 +11,10 @@ public class Tag {
     public final static int IDENTIFIER = 258;
 
     public final static int BINARY_OPERATOR = 259;
+
+    public final static int ANNOTATION = 260;
+
+    public final static int REAL_NUM = 261;
+
+    public final static int END = 262;
 }
