@@ -1,7 +1,5 @@
 package Lexer.Token;
 
-import Lexer.Lexer;
-
 /**
  * 词法单元对象的类型
  */

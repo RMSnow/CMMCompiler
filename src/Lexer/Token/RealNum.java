@@ -1,7 +1,5 @@
 package Lexer.Token;
 
-import Lexer.Lexer;
-
 /**
  * 实数
  */

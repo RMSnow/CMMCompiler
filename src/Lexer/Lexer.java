@@ -10,21 +10,48 @@ import java.util.Hashtable;
  * 词法分析程序
  */
 public class Lexer {
-    public int line = 1;        //对输入行计数---------------------------------
     private char peek = ' ';        //存放下一个输入字符
     private Hashtable words = new Hashtable();
     private Hashtable symbols = new Hashtable();
+    private CharStream charStream;
+
+    public int line = 1;        //对输入行计数
+
+    /**
+     * 控制台输入
+     */
+    public Lexer() {
+        initialize();
+        charStream = new ConsoleCharStream();
+    }
+
+    /**
+     * 文件输入
+     *
+     * @param filename
+     */
+    public Lexer(String filename) {
+        initialize();
+        try {
+            charStream = new FileCharStream(filename);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * 添加保留字
      *
-     * @param
+     * @param t
      */
-    void reserve(Word t) {
+    public void reserve(Word t) {
         words.put(t.lexeme, t);
     }
 
-    public Lexer() {
+    /**
+     * 保留字与特殊符号初始化
+     */
+    public void initialize() {
         //保留字
         reserve(new Word(Tag.KEYWORD, "if"));
         reserve(new Word(Tag.KEYWORD, "else"));
@@ -59,22 +86,23 @@ public class Lexer {
         symbols.put("==", new BinaryOperator("=="));
         symbols.put("<>", new BinaryOperator("<>"));
         symbols.put("[]", new BinaryOperator("[]"));
-
     }
 
     /**
-     * 扫描输入字符
+     * 扫描输入字符，每次读取一个字符
      *
      * @return 返回一个词法单元
      * @throws IOException
      */
-    public Token scan(CharStream charStream, File file) throws IOException {
+    public Token scan() throws IOException {
         //跳过空白
-        for (; ; peek = (char) charStream.readChar(file)) {
+        for (; ; peek = (char) charStream.readChar()) {
             if (peek == ' ' || peek == '\t')
                 continue;
             else if (peek == '\n')
                 line++;
+            else if (peek == (char) (-1))
+                return new Token(Tag.END);
             else break;
         }
 
@@ -83,7 +111,7 @@ public class Lexer {
             int v = 0;
             do {
                 v = 10 * v + Character.digit(peek, 10);
-                peek = (char) charStream.readChar(file);
+                peek = (char) charStream.readChar();
             } while (Character.isDigit(peek));
 
             //整数
@@ -91,12 +119,12 @@ public class Lexer {
                 return new Num(v);
 
             //浮点数
-            peek = (char) charStream.readChar(file);
+            peek = (char) charStream.readChar();
             int f = 0;
             if (Character.isDigit(peek)) {
                 do {
                     f = 10 * f + Character.digit(peek, 10);
-                    peek = (char) charStream.readChar(file);
+                    peek = (char) charStream.readChar();
                 } while (Character.isDigit(peek));
             }
 
@@ -106,12 +134,12 @@ public class Lexer {
         }
         //处理点号'.'
         if (peek == '.') {
-            peek = (char) charStream.readChar(file);
+            peek = (char) charStream.readChar();
             int f = 0;
             if (Character.isDigit(peek)) {
                 do {
                     f = 10 * f + Character.digit(peek, 10);
-                    peek = (char) charStream.readChar(file);
+                    peek = (char) charStream.readChar();
                 } while (Character.isDigit(peek));
             }
 
@@ -131,7 +159,7 @@ public class Lexer {
             StringBuffer b = new StringBuffer();        //通过缓冲区实现预读
             do {
                 b.append(peek);
-                peek = (char) charStream.readChar(file);
+                peek = (char) charStream.readChar();
             } while (Character.isLetter(peek) || Character.isDigit(peek) || peek == '_');
 
             String s = b.toString();
@@ -160,7 +188,7 @@ public class Lexer {
             return null;
         }
 
-        //处理'#'
+        //处理结束符
         if (peek == '#') {
             return new Token(Tag.END);
         }
@@ -174,14 +202,14 @@ public class Lexer {
 
         //预读下一个字符
         String s = String.valueOf(peek);
-        peek = (char) charStream.readChar(file);
+        peek = (char) charStream.readChar();
         s += String.valueOf(peek);
 
         //单行注释
         if (s.equals("//")) {
             int r;
             do {
-                r = charStream.readChar(file);
+                r = charStream.readChar();
             } while (r != '\n');
 
             peek = ' ';
@@ -191,11 +219,15 @@ public class Lexer {
         //多行注释
         if (s.equals("/*")) {
             for (; ; ) {
-                peek = (char) charStream.readChar(file);
+                peek = (char) charStream.readChar();
+                if (peek == (char) (-1)) {     //文件输入的多行注释错误
+                    LexerException.unclosedMultiAnnotation();
+                    return null;
+                }
                 if (peek == '*') {
                     //预读下一个字符
                     s = String.valueOf(peek);
-                    peek = (char) charStream.readChar(file);
+                    peek = (char) charStream.readChar();
                     s += String.valueOf(peek);
 
                     if (s.equals("*/")) {
@@ -218,34 +250,3 @@ public class Lexer {
     }
 
 }
-
-/*
-
-下一步进行：
-（1）ok结束符"#"
-（2）文件I／O
-（3）ok出错处理、报错信息完善（如行号，如继承某个类，如用try）
-（4）ok注释// /*
-（5）ok浮点数
-
- */
-
-/*
-总结：
-1. char与int
-2. 注意，对String来说，=，与compare
-3. 异常处理：用try,以及ExceptionHandle继承某个类
-4. peek多读以后，会不会"吃掉"一个字符
-5. RealNum：对象作为参数时
-6. Java读取文件
-
-遇到耗时的地方/设计的地方
-0. 整个框架的设计：为什么扫描函数scan要返回Token，而不直接用String打印出来
-1. 双目运算符的设计：如何存储，如何打印
-2. 很关键的一点：词法分析和语法分析搞混，不需要进行这么多出错处理，这是语法分析该干的事情
-    eg：一直在想，正确的NUM、WORD后面的内容
-    （当符号词法单元正确时，其后面的字符为空格、制表符、【换行符】？、或注释……）
-
-3. 不会使用调试工具
-
- */
