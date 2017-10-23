@@ -1,18 +1,18 @@
 int a, b;
-    real[] r;
-    a = 1;
-    read(b);
-    r[0] = 0;
+real[] r;
+a = 1;
+read(b);
+r[0] = 0;
 
-    while(a < b){
-        if(a == 3){
-            r[3] = 3;
-        }else if(a >= 5){
-            r[5] = 5;
-        }else{
-            r[7] = (a * 3) - (b / 3);
-        }
-        a = a + 1;
+while(a < b){
+    if(a == 3){
+        r[3] = 3;
+    }else if(a >= 5){
+        r[5] = 5;
+    }else{
+        r[7] = (a * 3) - (b / 3);
     }
+    a = a + 1;
+}
 
-    write(a, b, r);
+write(a, b, r);
