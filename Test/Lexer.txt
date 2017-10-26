@@ -15,4 +15,4 @@ while(a < b){
     a = a + 1;
 }
 
-write(a, b, r);
+write(a);
