@@ -15,7 +15,7 @@ public class Lexer {
     private Hashtable symbols = new Hashtable();
     private CharStream charStream;
 
-    public int line = 1;        //对输入行计数
+    public static int line = 1;        //对输入行计数
 
     /**
      * 控制台输入
