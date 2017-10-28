@@ -7,14 +7,37 @@ import parser.ParserException;
  * 抽象语法树的结点
  */
 public class Node {
-    //保存了本结点对应的构造在源程序中的行号
-    int lexline = 0;
+    public int startLine = 0;
+    public int endLine = 0;
+    public static final boolean STARTLINE = true;
+    public static final boolean ENDLINE = false;
 
-    Node(){
-        lexline = Lexer.line;
+    private String value = "";
+
+    public Node(){
+        startLine = Lexer.line;
     }
 
-    void error(){
+    //修改结点值
+    public void addValue(String s){
+        value += s;
+    }
+
+    //获取结点值
+    public String getValue(){
+        return value;
+    }
+
+    public void printNode(){
+        if(this.startLine != this.endLine){
+            System.out.printf("[Line "+this.endLine+": From Line "+this.startLine+"] ");
+        }else{
+            System.out.printf("[Line "+this.startLine +"] ");
+        }
+    }
+
+    //------------------------------------------
+    public void error(){
         ParserException.error();
     }
 

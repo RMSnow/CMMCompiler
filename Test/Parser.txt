@@ -1,11 +1,14 @@
-{{int a, b;}}
+{
+    int a,b,c;
+}
 
 
 
 
-/*real[] r;
+//real[] r;
 a = 1;
-read(b);
+
+/*read(b);
 r[0] = 0;
 
 while(a < b){

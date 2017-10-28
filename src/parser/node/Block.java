@@ -1,14 +1,25 @@
 package parser.node;
 
 /**
- *  块结点
+ * 块结点
  */
-public class Block {
+public class Block extends Node {
     //Block   -> { SubProgram }
 
-    public SubProgram subProgram;
+//    public SubProgram subProgram;
+//
+//    public Block() {
+//
+//    }
+//
+//    public Block(SubProgram subProgram) {
+//        this.subProgram = subProgram;
+//        addValue("{ SubProgram }");
+//    }
 
-    public Block(SubProgram subProgram){
-        this.subProgram = subProgram;
+    @Override
+    public void printNode() {
+        super.printNode();
+        System.out.println("Block -> { SubProgram }");
     }
 }

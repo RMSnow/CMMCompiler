@@ -4,9 +4,7 @@ import lexer.Lexer;
 import lexer.Token.Tag;
 import lexer.Token.Token;
 import lexer.Token.Word;
-import parser.node.Block;
-import parser.node.Stmt;
-import parser.node.SubProgram;
+import parser.node.*;
 import parser.stmt.*;
 
 import java.io.IOException;
@@ -15,8 +13,8 @@ import java.io.IOException;
  * 语法分析器
  */
 public class Parser {
-    private Lexer lexer;
-    private Token look;     //向前看词法单元
+    private static Lexer lexer;
+    public static Token look;     //向前看词法单元
 
     public Parser(Lexer lexer) throws IOException {
         this.lexer = lexer;
@@ -24,7 +22,7 @@ public class Parser {
     }
 
     //向前读一个Token
-    void move() throws IOException {
+    static void move() throws IOException {
         look = lexer.scan();
     }
 
@@ -34,82 +32,107 @@ public class Parser {
     }
 
     //判断是否匹配
-    void match(int t) throws IOException {
+    public static void match(int t) throws IOException {
         if (look.tag == t) {
+
             move();
         } else {
             ParserException.error();
         }
     }
-    void match() throws IOException {
+
+    public static void match() throws IOException {
         move();
+    }
+
+    //判断是否匹配且修改结点所在行
+    public static void match(int t, Node node, boolean tag) throws IOException {
+        if (look.tag == t) {
+            if (tag == Node.ENDLINE) {
+                node.endLine = lexer.line;
+            }
+            move();
+        } else {
+            ParserException.error();
+        }
     }
 
     /**
      * 递归下降分析的入口
+     *
      * @throws IOException
      */
     public void program() throws IOException {
         subProgram();
     }
 
-    //SubProgram -> Stmt
-    //           -> Block
+    /**
+     * SubProgram -> Stmt
+     * | Block
+     *
+     * @return
+     * @throws IOException
+     */
     SubProgram subProgram() throws IOException {
-        //是Follow么？---------------------------
-//        if(look.tag == '}'){
-//            return Stmt.Null;
-//        }
+        SubProgram subProgram;
         if (look.tag == '{') {
-            //return block();
-            return new SubProgram(block());
+            subProgram = new SubProgram(block());
+        } else {
+            subProgram = new SubProgram(stmt());
         }
-        //return stmt();
-        return new SubProgram(stmt());
+        subProgram.endLine = lexer.line;
+
+        return subProgram;
     }
 
-    //Block   -> { SubProgram }
+    /**
+     * Block -> { SubProgram }
+     *
+     * @return
+     * @throws IOException
+     */
     Block block() throws IOException {
+        Block block = new Block();
+
         match('{');
-        SubProgram subProgram = subProgram();
-        match('}');
-        return new Block(subProgram);
+        subProgram();
+        match('}', block, Node.ENDLINE);
+
+        block.printNode();
+        return block;
     }
 
-    /*
-    Stmt    -> VarDecl
-            -> AssignStmt
-            -> IfStmt
-            -> WhileStmt
-            -> ReadStmt
-            -> WriteStmt
-    */
+
+    /**
+     * Stmt -> VarDecl
+     * | AssignStmt
+     * | IfStmt
+     * | WhileStmt
+     * | ReadStmt
+     * | WriteStmt
+     *
+     * @return
+     * @throws IOException
+     */
     Stmt stmt() throws IOException {
         if (look.tag == Tag.KEYWORD) {
             switch (((Word) look).lexeme) {
                 case "int":
                 case "real":
-                    /*
-                    VarDecl -> Type VarList ;
 
-                    Type    -> int
-                            -> real
-                            //暂时不处理下面两个-----------------
-                            -> int[]
-                            -> real[]
-
-                    VarList -> ident OtherIdent
-
-                    OtherIdent  -> , ident OtherIdent
-                                -> [null]
-                     */
+                    //VarDecl -> Type VarList ;
+                    VarDeclStmt varDeclStmt = new VarDeclStmt();
+                    String type = ((Word) look).lexeme;
+                    Stmt varListNode = new Stmt();
 
                     match();
-                    Stmt varList = varList();
-                    match(';');
+                    varDeclStmt.varList(varListNode);
+                    match(';', varDeclStmt, Node.ENDLINE);
 
-                    VarDeclStmt varDeclStmt = new VarDeclStmt("undefined-type", varList);
-                    varDeclStmt.printSyntaxTree();
+                    varDeclStmt.setType(type);
+                    varDeclStmt.setVarList(varListNode);
+                    varDeclStmt.printNode();
+
                     return varDeclStmt;
 
                 case "while":
@@ -121,7 +144,27 @@ public class Parser {
                 case "if":
                     return new IfStmt();
                 default:
-                    return new AssignStmt();
+
+                    //AssignStmt  -> ident = Expr ;
+                    AssignStmt assignStmt = new AssignStmt(((Word) look).lexeme);
+
+                    match();
+                    match('=');
+
+                    //匹配Expr----------------------------
+                    Expr expr = new Expr();
+                    //Expr    -> Term OtherTerm
+                    expr.term();
+                    expr.otherTerm();
+
+                    //-----------------------------------
+
+                    match(';', assignStmt, Node.ENDLINE);
+
+                    assignStmt.setExpr(expr);
+                    assignStmt.printNode();
+
+                    return assignStmt;
             }
         }
 
@@ -129,29 +172,31 @@ public class Parser {
         return null;
     }
 
-    //VarList -> ident OtherIdent
-    Stmt varList() throws IOException {
-        match(Tag.IDENTIFIER);
-        return otherIdent();
-    }
+    //AssignStmt  -> ident = Expr ;
+    Stmt assignStmt() {
 
-    //OtherIdent  -> , ident OtherIdent
-    //            -> [null]
-    Stmt otherIdent() throws IOException {
-        if(look.tag == ','){
-            match(',');
-            match(Tag.IDENTIFIER);
-            return otherIdent();
-        }
-        return Stmt.Null;
+        return null;
     }
-
 
 
 }
 
 
 /*
-完成声明语句的识别
+
+1. 打印结点信息，子程序、块、声明语句测试 ok
+（1）输出行号的范围 ok
+（2）得出识别一个句子的最左推导 ok
+
+2. 赋值语句
+
+3. While语句
+
+4. Read语句与Write语句
+
+5. If语句
+
+所有的都做完了，最后才是出错处理
+
  */
 

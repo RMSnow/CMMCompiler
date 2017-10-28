@@ -7,7 +7,7 @@ import parser.node.Stmt;
  */
 public class IfStmt extends Stmt {
 //    @Override
-//    public void printSyntaxTree(){
+//    public void printNode(){
 //
 //    }
 }
