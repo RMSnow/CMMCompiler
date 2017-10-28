@@ -34,7 +34,6 @@ public class Parser {
     //判断是否匹配
     public static void match(int t) throws IOException {
         if (look.tag == t) {
-
             move();
         } else {
             ParserException.error();
@@ -64,25 +63,44 @@ public class Parser {
      */
     public void program() throws IOException {
         subProgram();
+//        if(look.tag == Tag.END){
+//            return;
+//        }
     }
 
     /**
-     * SubProgram -> Stmt
-     * | Block
+     * SubProgram -> Stmt SubProgram
+     * | Block SubProgram
+     * | [null]
      *
      * @return
      * @throws IOException
      */
     SubProgram subProgram() throws IOException {
-        SubProgram subProgram;
-        if (look.tag == '{') {
-            subProgram = new SubProgram(block());
-        } else {
-            subProgram = new SubProgram(stmt());
-        }
-        subProgram.endLine = lexer.line;
+//        SubProgram subProgram;
+//        if (look.tag == '{') {
+//            subProgram = new SubProgram(block());
+//        } else {
+//            subProgram = new SubProgram(stmt());
+//        }
+//        subProgram.endLine = lexer.line;
+//
+//        return subProgram;
 
-        return subProgram;
+        switch (look.tag){
+            case '{':
+                new SubProgram(block());
+                return subProgram();
+            case Tag.IDENTIFIER:
+            case Tag.KEYWORD:
+                new SubProgram(stmt());
+                return subProgram();
+            case Tag.ANNOTATION:
+                match(Tag.ANNOTATION);
+                return subProgram();
+            default:
+                return SubProgram.Null;
+        }
     }
 
     /**
@@ -115,7 +133,7 @@ public class Parser {
      * @throws IOException
      */
     Stmt stmt() throws IOException {
-        if (look.tag == Tag.KEYWORD) {
+        if (look instanceof Word) {
             switch (((Word) look).lexeme) {
                 case "int":
                 case "real":
@@ -150,15 +168,7 @@ public class Parser {
 
                     match();
                     match('=');
-
-                    //匹配Expr----------------------------
                     Expr expr = new Expr();
-                    //Expr    -> Term OtherTerm
-                    expr.term();
-                    expr.otherTerm();
-
-                    //-----------------------------------
-
                     match(';', assignStmt, Node.ENDLINE);
 
                     assignStmt.setExpr(expr);
@@ -188,7 +198,7 @@ public class Parser {
 （1）输出行号的范围 ok
 （2）得出识别一个句子的最左推导 ok
 
-2. 赋值语句
+2. 赋值语句 ok
 
 3. While语句
 
@@ -196,7 +206,9 @@ public class Parser {
 
 5. If语句
 
-所有的都做完了，最后才是出错处理
+所有的都做完了，最后才是
+（1）出错处理
+（2）注释
 
  */
 

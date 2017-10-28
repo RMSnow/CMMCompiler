@@ -9,6 +9,7 @@
 
 （1）注释嵌套/*/**/
 （2）与parser有关的：是否要把int[]、real[]处理成一个Token
+（3）有注释的时候，行号的问题
 
 ## parser
 
@@ -31,8 +32,9 @@
 
 Program -> SubProgram
 
-SubProgram -> Stmt
-           -> Block
+SubProgram -> Stmt SubProgram
+           -> Block SubProgram
+           -> [EOF]
 
 ------------------语句与块------------------
 
@@ -62,6 +64,7 @@ OtherIdent  -> , ident OtherIdent
 ------------------赋值语句------------------
 
 AssignStmt  -> ident = Expr ;
+            -> ident [ Expr ] = Expr ;
 
 ------------------选择语句------------------
 
@@ -112,6 +115,7 @@ OtherFactor -> * Factor OtherFactor
 
 Factor  -> ident
         -> ident [ Expr ]
+        -> [Num]
         -> ( Expr )
 
 

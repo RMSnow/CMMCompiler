@@ -212,6 +212,7 @@ public class Lexer {
                 r = charStream.readChar();
             } while (r != '\n');
 
+            line++;
             peek = ' ';
             return new Token(Tag.ANNOTATION);
         }
@@ -220,6 +221,9 @@ public class Lexer {
         if (s.equals("/*")) {
             for (; ; ) {
                 peek = (char) charStream.readChar();
+                if(peek == '\n'){
+                    line++;
+                }
                 if (peek == (char) (-1)) {     //文件输入的多行注释错误
                     LexerException.unclosedMultiAnnotation();
                     return null;

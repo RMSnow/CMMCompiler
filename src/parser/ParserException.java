@@ -5,6 +5,6 @@ package parser;
  */
 public class ParserException {
     public static void error(){
-        System.out.println("error");
+        //System.out.println("error");
     }
 }
