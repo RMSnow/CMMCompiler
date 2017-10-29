@@ -2,10 +2,11 @@ package parser.node;
 
 /**
  * 字程序结点
+ * SubProgram
+ * -> Stmt
+ * | Block
  */
 public class SubProgram extends Node {
-    //SubProgram -> Stmt
-    //           -> Block
 
     public Stmt stmt;
     public Block block;
@@ -21,21 +22,4 @@ public class SubProgram extends Node {
         this.block = block;
         addValue("Block");
     }
-
-
-//    @Override
-//    public void printNode() {
-//        if (this.startLine != this.endLine) {
-//            System.out.printf("[Line " + this.startLine + "-" + this.endLine + "] ");
-//        } else {
-//            System.out.printf("[Line " + this.startLine + "] ");
-//        }
-//
-//        if (this.getValue() == "Stmt") {
-//            System.out.println("SubProgram -> Stmt");
-//        } else {
-//            System.out.println("SubProgram -> Block");
-//        }
-//    }
-
 }

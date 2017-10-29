@@ -63,13 +63,11 @@ public class Parser {
      */
     public void program() throws IOException {
         subProgram();
-//        if(look.tag == Tag.END){
-//            return;
-//        }
     }
 
     /**
-     * SubProgram -> Stmt SubProgram
+     * SubProgram
+     * -> Stmt SubProgram
      * | Block SubProgram
      * | [null]
      *
@@ -77,16 +75,6 @@ public class Parser {
      * @throws IOException
      */
     SubProgram subProgram() throws IOException {
-//        SubProgram subProgram;
-//        if (look.tag == '{') {
-//            subProgram = new SubProgram(block());
-//        } else {
-//            subProgram = new SubProgram(stmt());
-//        }
-//        subProgram.endLine = lexer.line;
-//
-//        return subProgram;
-
         switch (look.tag){
             case '{':
                 new SubProgram(block());
@@ -104,7 +92,8 @@ public class Parser {
     }
 
     /**
-     * Block -> { SubProgram }
+     * Block
+     * -> { SubProgram }
      *
      * @return
      * @throws IOException
@@ -122,7 +111,8 @@ public class Parser {
 
 
     /**
-     * Stmt -> VarDecl
+     * Stmt
+     * -> VarDecl
      * | AssignStmt
      * | IfStmt
      * | WhileStmt
@@ -137,7 +127,6 @@ public class Parser {
             switch (((Word) look).lexeme) {
                 case "int":
                 case "real":
-
                     //VarDecl -> Type VarList ;
                     VarDeclStmt varDeclStmt = new VarDeclStmt();
                     String type = ((Word) look).lexeme;
@@ -152,7 +141,6 @@ public class Parser {
                     varDeclStmt.printNode();
 
                     return varDeclStmt;
-
                 case "while":
                     return new WhileStmt();
                 case "read":
@@ -162,7 +150,6 @@ public class Parser {
                 case "if":
                     return new IfStmt();
                 default:
-
                     //AssignStmt  -> ident = Expr ;
                     AssignStmt assignStmt = new AssignStmt(((Word) look).lexeme);
 
@@ -181,13 +168,6 @@ public class Parser {
         error();
         return null;
     }
-
-    //AssignStmt  -> ident = Expr ;
-    Stmt assignStmt() {
-
-        return null;
-    }
-
 
 }
 
@@ -209,6 +189,7 @@ public class Parser {
 所有的都做完了，最后才是
 （1）出错处理
 （2）注释
+（3）注解的完善
 
  */
 

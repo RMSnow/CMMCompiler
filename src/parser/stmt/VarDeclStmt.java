@@ -12,19 +12,18 @@ import static parser.Parser.look;
 
 /**
  * 声明语句
- *
- * VarDecl -> Type VarList ;
- *
- * Type    -> int
- * -> real
- * //暂时不处理下面两个-----------------
- * -> int[]
- * -> real[]
- *
- * VarList -> ident OtherIdent
- *
- * OtherIdent  -> , ident OtherIdent
- * -> [null]
+ * VarDecl
+ * -> Type VarList ;
+ * Type
+ * -> int
+ * | real
+ * | int[]---------------------------
+ * | real[]
+ * VarList
+ * -> ident OtherIdent
+ * OtherIdent
+ * -> , ident OtherIdent
+ * | [null]
  */
 
 public class VarDeclStmt extends Stmt {
@@ -48,7 +47,8 @@ public class VarDeclStmt extends Stmt {
     }
 
     /**
-     * VarList -> ident OtherIdent
+     * VarList
+     * -> ident OtherIdent
      *
      * @param node
      * @return
@@ -61,7 +61,8 @@ public class VarDeclStmt extends Stmt {
     }
 
     /**
-     * OtherIdent  -> , ident OtherIdent
+     * OtherIdent
+     * -> , ident OtherIdent
      * | [null]
      *
      * @param node

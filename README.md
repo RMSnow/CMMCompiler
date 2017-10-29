@@ -33,17 +33,17 @@
 Program -> SubProgram
 
 SubProgram -> Stmt SubProgram
-           -> Block SubProgram
-           -> [EOF]
+           | Block SubProgram
+           | [EOF]
 
 ------------------语句与块------------------
 
 Stmt    -> VarDecl
-        -> AssignStmt
-        -> IfStmt
-        -> WhileStmt
-        -> ReadStmt
-        -> WriteStmt
+        | AssignStmt
+        | IfStmt
+        | WhileStmt
+        | ReadStmt
+        | WriteStmt
 
 Block   -> { SubProgram }
 
@@ -52,33 +52,33 @@ Block   -> { SubProgram }
 VarDecl -> Type VarList ;
 
 Type    -> int
-        -> real
-        -> int[]
-        -> real[]
+        | real
+        | int[]
+        | real[]
 
 VarList -> ident OtherIdent
 
 OtherIdent  -> , ident OtherIdent
-            -> [null]
+            | [null]
 
 ------------------赋值语句------------------
 
 AssignStmt  -> ident = Expr ;
-            -> ident [ Expr ] = Expr ;
+            | ident [ Expr ] = Expr ;
 
 ------------------选择语句------------------
 
 IfStmt      -> if ( Cdt ) Block OtherIfStmt
 
 OtherIfStmt  -> ElseIfStmt
-             -> ElseIfStmt ElseStmt
-             -> [null]
+             | ElseIfStmt ElseStmt
+             | [null]
 
 ElseIfStmt  -> else if ( Cdt ) Block ElseIfStmt
-            -> [null]
+            | [null]
 
 ElseStmt    -> else Block ElseStmt
-            -> [null]
+            | [null]
 
 ------------------循环语句------------------
 
@@ -93,30 +93,30 @@ WriteStmt   -> write ( Expr ) ;
 --------------------条件--------------------
 
 Cdt     -> Expr < Expr
-        -> Expr > Expr
-        -> Expr == Expr
-        -> Expr <= Expr
-        -> Expr >= Expr
-        -> Expr <> Expr
+        | Expr > Expr
+        | Expr == Expr
+        | Expr <= Expr
+        | Expr >= Expr
+        | Expr <> Expr
 
 --------------------表达式-------------------
 
 Expr    -> Term OtherTerm
 
 OtherTerm   -> + Term OtherTerm
-            -> - Term OtherTerm
-            -> [null]
+            | - Term OtherTerm
+            | [null]
 
 Term    -> Factor OtherFactor
 
 OtherFactor -> * Factor OtherFactor
-            -> / Factor OtherFactor
-            -> [null]
+            | / Factor OtherFactor
+            | [null]
 
 Factor  -> ident
-        -> ident [ Expr ]
-        -> [Num]
-        -> ( Expr )
+        | ident [ Expr ]
+        | [Num]
+        | ( Expr )
 
 
 ------------------其他说明------------------

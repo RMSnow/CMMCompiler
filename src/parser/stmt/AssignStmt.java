@@ -5,8 +5,8 @@ import parser.node.Stmt;
 
 /**
  * 赋值语句
- *
- * AssignStmt  -> ident = Expr ;
+ * AssignStmt
+ * -> ident = Expr ;
  */
 public class AssignStmt extends Stmt {
     private String ident;

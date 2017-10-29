@@ -3,11 +3,10 @@ package parser.stmt;
 import parser.node.Stmt;
 
 /**
- * Created by snow on 26/10/2017.
+ * 读取语句
+ * ReadStmt
+ * -> read ( Expr ) ;
  */
 public class ReadStmt extends Stmt {
-//    @Override
-//    public void printNode(){
-//
-//    }
+
 }
