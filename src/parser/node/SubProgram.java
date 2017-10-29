@@ -1,13 +1,13 @@
 package parser.node;
 
 /**
- * 字程序结点
+ * 子程序结点
+ * <p>
  * SubProgram
  * -> Stmt
  * | Block
  */
 public class SubProgram extends Node {
-
     public Stmt stmt;
     public Block block;
 

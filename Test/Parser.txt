@@ -1,27 +1,33 @@
-{
-    int a,b,c;
-}
-
-
-
-
-//real[] r;
-a = 1;
-b = 5+6*3.9;
-c = (5+3)*4.8;
-
-/*read(b);
-r[0] = 0;
-
-while(a < b){
-    if(a == 3){
-        r[3] = 3;
-    }else if(a >= 5){
-        r[5] = 5;
-    }else{
-        r[7] = a * 3 - b / 3;
+//while语句
+while(a < c){
+    //块 & 声明语句
+    {
+        int a,b,c;
     }
+
+    //赋值语句
+    a = 1;
+    b = 5+6*3.9;
+    c = (5+3)*4.8;
+
+    //read & write语句
+    read(a);
+    write((5+3)*4.8);
+
+    real r_1, r_2;
+
+    //选择语句
+    if(a == 3){
+        r = 3;
+    }else if(a >= 5){
+        r = 5;
+    }else if(a < 8+5/3.6){
+        r_1 = (5+3);
+    }else if(a > 8.6){
+        r_2 = 3;
+    }else{
+        r = 3;
+    }
+
     a = a + 1;
 }
-
-write(a);*/

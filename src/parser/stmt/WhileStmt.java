@@ -4,12 +4,21 @@ import parser.node.Stmt;
 
 /**
  * 循环语句
+ * <p>
  * WhileStmt
- * -> ( Cdt ) Block
+ * -> while ( Cdt ) Block
  */
 public class WhileStmt extends Stmt {
-//    @Override
-//    public void printNode(){
-//
-//    }
+    private CdtStmt cdt;
+
+    public void setCdt(CdtStmt cdt) {
+        this.cdt = cdt;
+    }
+
+    @Override
+    public void printNode() {
+        super.printNode();
+        System.out.println("WhileStmt -> while ( Cdt ) Block " +
+                "-> while (" + cdt.getValue() + ") Block");
+    }
 }

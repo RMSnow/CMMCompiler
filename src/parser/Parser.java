@@ -21,17 +21,21 @@ public class Parser {
         move();
     }
 
-    //向前读一个Token
+    /**
+     * 向前读一个Token
+     *
+     * @throws IOException
+     */
     static void move() throws IOException {
         look = lexer.scan();
     }
 
-    //--------------------------------
-    void error() {
-        ParserException.error();
-    }
-
-    //判断是否匹配
+    /**
+     * 判断是否匹配
+     *
+     * @param t
+     * @throws IOException
+     */
     public static void match(int t) throws IOException {
         if (look.tag == t) {
             move();
@@ -44,7 +48,6 @@ public class Parser {
         move();
     }
 
-    //判断是否匹配且修改结点所在行
     public static void match(int t, Node node, boolean tag) throws IOException {
         if (look.tag == t) {
             if (tag == Node.ENDLINE) {
@@ -61,7 +64,7 @@ public class Parser {
      *
      * @throws IOException
      */
-    public void program() throws IOException {
+    public static void program() throws IOException {
         subProgram();
     }
 
@@ -74,8 +77,8 @@ public class Parser {
      * @return
      * @throws IOException
      */
-    SubProgram subProgram() throws IOException {
-        switch (look.tag){
+    public static SubProgram subProgram() throws IOException {
+        switch (look.tag) {
             case '{':
                 new SubProgram(block());
                 return subProgram();
@@ -98,7 +101,7 @@ public class Parser {
      * @return
      * @throws IOException
      */
-    Block block() throws IOException {
+    public static Block block() throws IOException {
         Block block = new Block();
 
         match('{');
@@ -122,7 +125,10 @@ public class Parser {
      * @return
      * @throws IOException
      */
-    Stmt stmt() throws IOException {
+    public static Stmt stmt() throws IOException {
+        Expr expr;
+        CdtStmt cdtStmt;
+
         if (look instanceof Word) {
             switch (((Word) look).lexeme) {
                 case "int":
@@ -130,32 +136,78 @@ public class Parser {
                     //VarDecl -> Type VarList ;
                     VarDeclStmt varDeclStmt = new VarDeclStmt();
                     String type = ((Word) look).lexeme;
-                    Stmt varListNode = new Stmt();
 
                     match();
-                    varDeclStmt.varList(varListNode);
+                    varDeclStmt.varList();
                     match(';', varDeclStmt, Node.ENDLINE);
 
                     varDeclStmt.setType(type);
-                    varDeclStmt.setVarList(varListNode);
                     varDeclStmt.printNode();
-
                     return varDeclStmt;
                 case "while":
-                    return new WhileStmt();
+                    //WhileStmt   -> while ( Cdt ) { SubProgram }
+                    WhileStmt whileStmt = new WhileStmt();
+
+                    match();
+                    match('(');
+                    cdtStmt = new CdtStmt();
+                    match(')');
+                    match('{');
+                    subProgram();
+                    match('}', whileStmt, Node.ENDLINE);
+
+                    whileStmt.setCdt(cdtStmt);
+                    whileStmt.printNode();
+                    return whileStmt;
                 case "read":
-                    return new ReadStmt();
+                    //ReadStmt    -> read ( Expr ) ;
+                    ReadStmt readStmt = new ReadStmt();
+
+                    match();
+                    match('(');
+                    expr = new Expr();
+                    match(')');
+                    match(';', readStmt, Node.ENDLINE);
+
+                    readStmt.setExpr(expr);
+                    readStmt.printNode();
+                    return readStmt;
                 case "write":
-                    return new WriteStmt();
+                    //WriteStmt   -> write ( Expr ) ;
+                    WriteStmt writeStmt = new WriteStmt();
+
+                    match();
+                    match('(');
+                    expr = new Expr();
+                    match(')');
+                    match(';', writeStmt, Node.ENDLINE);
+
+                    writeStmt.setExpr(expr);
+                    writeStmt.printNode();
+                    return writeStmt;
                 case "if":
-                    return new IfStmt();
+                    //IfStmt      -> if ( Cdt ) { SubProgram } OtherIfStmt
+                    IfStmt ifStmt = new IfStmt();
+
+                    match();
+                    match('(');
+                    cdtStmt = new CdtStmt();
+                    match(')');
+                    match('{');
+                    subProgram();
+                    match('}', ifStmt, Node.ENDLINE);
+                    ifStmt.otherIfStmt();
+
+                    ifStmt.setCdtStmt(cdtStmt);
+                    ifStmt.printNode();
+                    return ifStmt;
                 default:
                     //AssignStmt  -> ident = Expr ;
                     AssignStmt assignStmt = new AssignStmt(((Word) look).lexeme);
 
                     match();
                     match('=');
-                    Expr expr = new Expr();
+                    expr = new Expr();
                     match(';', assignStmt, Node.ENDLINE);
 
                     assignStmt.setExpr(expr);
@@ -164,32 +216,9 @@ public class Parser {
                     return assignStmt;
             }
         }
-
-        error();
+        ParserException.error();
         return null;
     }
 
 }
-
-
-/*
-
-1. 打印结点信息，子程序、块、声明语句测试 ok
-（1）输出行号的范围 ok
-（2）得出识别一个句子的最左推导 ok
-
-2. 赋值语句 ok
-
-3. While语句
-
-4. Read语句与Write语句
-
-5. If语句
-
-所有的都做完了，最后才是
-（1）出错处理
-（2）注释
-（3）注解的完善
-
- */
 

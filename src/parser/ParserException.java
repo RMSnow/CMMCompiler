@@ -1,10 +1,10 @@
 package parser;
 
 /**
- * Created by snow on 26/10/2017.
+ * 异常处理机制
  */
 public class ParserException {
     public static void error(){
-        //System.out.println("error");
+        System.out.println("Syntax Error!");
     }
 }

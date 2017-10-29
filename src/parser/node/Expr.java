@@ -8,21 +8,26 @@ import java.io.IOException;
 
 /**
  * 表达式结点
+ * <p>
  * Expr
  * -> Term OtherTerm
+ * <p>
  * OtherTerm
  * -> + Term OtherTerm
  * | - Term OtherTerm
  * | [null]
+ * <p>
  * Term
  * -> Factor OtherFactor
+ * <p>
  * OtherFactor
  * -> * Factor OtherFactor
  * | / Factor OtherFactor
  * | [null]
+ * <p>
  * Factor
  * -> ident
- * | ident [ Expr ]-------------------------
+ * | ident [ Expr ]
  * | [num]
  * | ( Expr )
  */
@@ -82,7 +87,7 @@ public class Expr extends Node {
     /**
      * Factor
      * -> ident
-     * | ident [ Expr ]-------------------------
+     * | ident [ Expr ]
      * | [num]
      * | ( Expr )
      *

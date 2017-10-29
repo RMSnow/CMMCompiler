@@ -9,9 +9,15 @@
 
 （1）注释嵌套/*/**/
 （2）与parser有关的：是否要把int[]、real[]处理成一个Token
-（3）有注释的时候，行号的问题
+（3）文档末有单行注释时，会产生错误的死循环
 
 ## parser
+
+未解决的问题：
+（1）有关注释
+（2）有关数组[]
+（3）if-else语句的ElseStmt
+（4）出错处理
 
 --------------------------------------------------------------------------------
 
@@ -77,12 +83,12 @@ OtherIfStmt  -> ElseIfStmt
 ElseIfStmt  -> else if ( Cdt ) Block ElseIfStmt
             | [null]
 
-ElseStmt    -> else Block ElseStmt
+ElseStmt    -> else Block
             | [null]
 
 ------------------循环语句------------------
 
-WhileStmt   -> ( Cdt ) Block
+WhileStmt   -> while ( Cdt ) Block
 
 ------------------输入输出------------------
 
@@ -129,8 +135,37 @@ CMM语言说明：
     read(a);
     write(b);
 
-（3）IfStmt
+（3）把选择语句化为LL(0)文法：
 
+IfStmt      -> if ( Cdt ) Block OtherIfStmt
+
+OtherIfStmt  -> ElseIfStmt
+             | ElseIfStmt ElseStmt
+             | [null]
+
+ElseIfStmt  -> else if ( Cdt ) Block ElseIfStmt
+            | [null]
+
+ElseStmt    -> else Block
+            | [null]
+            
+
+转化后为：
+
+IfStmt          -> if ( Cdt ) { SubProgram } OtherIfStmt
+
+OtherIfStmt     -> else OtherIfStmt1
+                 | [null]
+
+OtherIfStmt1    -> { SubProgram }
+                 | if ( Cdt ) { SubProgram } ElseIfStmt ElseStmt                
+                 
+ElseIfStmt      -> else if ( Cdt ) { SubProgram } ElseIfStmt
+                 | [null]
+
+ElseStmt        -> else { SubProgram }
+                 | [null]
+                 
 --------------------------------------------------------------------------------
 
 （2）输入、输出、测试用例
@@ -149,9 +184,9 @@ CMM语言说明：
 可先用Lexer.txt
 
 
-
-
 --------------------------------------------------------------------------------
+整理基础内容：
+
 （1）子类无法转父类
 
 （2）值传递与地址传递

@@ -3,39 +3,36 @@ package parser.stmt;
 import lexer.Token.Tag;
 import lexer.Token.Word;
 import parser.Parser;
-import parser.node.Node;
 import parser.node.Stmt;
 
 import java.io.IOException;
 
-import static parser.Parser.look;
 
 /**
  * 声明语句
+ * <p>
  * VarDecl
  * -> Type VarList ;
+ * <p>
  * Type
  * -> int
  * | real
- * | int[]---------------------------
+ * | int[]
  * | real[]
+ * <p>
  * VarList
  * -> ident OtherIdent
+ * <p>
  * OtherIdent
  * -> , ident OtherIdent
  * | [null]
  */
-
 public class VarDeclStmt extends Stmt {
     private String type;
-    private Stmt varList;
+    private Stmt varList = new Stmt();
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public void setVarList(Stmt varList) {
-        this.varList = varList;
     }
 
     @Override
@@ -50,14 +47,13 @@ public class VarDeclStmt extends Stmt {
      * VarList
      * -> ident OtherIdent
      *
-     * @param node
      * @return
      * @throws IOException
      */
-    public Stmt varList(Node node) throws IOException {
-        node.addValue(((Word) Parser.look).lexeme);
+    public Stmt varList() throws IOException {
+        varList.addValue(((Word) Parser.look).lexeme);
         Parser.match(Tag.IDENTIFIER);
-        return otherIdent(node);
+        return otherIdent();
     }
 
     /**
@@ -65,16 +61,15 @@ public class VarDeclStmt extends Stmt {
      * -> , ident OtherIdent
      * | [null]
      *
-     * @param node
      * @return
      * @throws IOException
      */
-    public Stmt otherIdent(Node node) throws IOException {
+    public Stmt otherIdent() throws IOException {
         if (Parser.look.tag == ',') {
             Parser.match(',');
-            node.addValue(", " + ((Word) Parser.look).lexeme);
+            varList.addValue(", " + ((Word) Parser.look).lexeme);
             Parser.match(Tag.IDENTIFIER);
-            return otherIdent(node);
+            return otherIdent();
         }
         return Stmt.Null;
     }

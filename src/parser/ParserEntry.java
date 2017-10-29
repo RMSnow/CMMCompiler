@@ -14,8 +14,5 @@ public class ParserEntry {
         Lexer lexer = new Lexer("Test/Parser.txt");
         parser = new Parser(lexer);
         parser.program();
-
-//        char c = 125;
-//        System.out.println(c);
     }
 }
