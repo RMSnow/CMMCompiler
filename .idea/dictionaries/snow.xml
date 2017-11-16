@@ -2,7 +2,9 @@
   <dictionary name="snow">
     <words>
       <w>decl</w>
+      <w>decls</w>
       <w>ident</w>
+      <w>stmts</w>
     </words>
   </dictionary>
 </component>
