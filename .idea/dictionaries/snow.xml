@@ -4,6 +4,7 @@
       <w>decl</w>
       <w>decls</w>
       <w>ident</w>
+      <w>readch</w>
       <w>stmts</w>
     </words>
   </dictionary>
