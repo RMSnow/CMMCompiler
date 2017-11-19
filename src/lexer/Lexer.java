@@ -1,7 +1,7 @@
 package lexer;
 
-import lexer.Token.*;
-import lexer.CharStream.*;
+import lexer.token.*;
+import lexer.charStream.*;
 
 import java.io.*;
 import java.util.Hashtable;

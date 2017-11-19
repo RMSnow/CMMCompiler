@@ -1,9 +1,9 @@
 package parser;
 
 import lexer.Lexer;
-import lexer.Token.Tag;
-import lexer.Token.Token;
-import lexer.Token.Word;
+import lexer.token.Tag;
+import lexer.token.Token;
+import lexer.token.Word;
 import parser.node.*;
 import parser.stmt.*;
 

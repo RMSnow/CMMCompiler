@@ -1,6 +1,6 @@
 package parser.stmt;
 
-import lexer.Token.Tag;
+import lexer.token.Tag;
 import parser.Parser;
 import parser.node.Node;
 import parser.node.Stmt;

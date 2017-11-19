@@ -1,4 +1,4 @@
-package lexer.CharStream;
+package lexer.charStream;
 
 import java.io.*;
 

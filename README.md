@@ -1,6 +1,6 @@
 # CMMParser
 
-## javaCC
+## javacc
 
 ## lexer
 总体方向：状态转换图实现 => 有穷自动机实现 

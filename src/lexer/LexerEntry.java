@@ -1,6 +1,6 @@
 package lexer;
 
-import lexer.Token.*;
+import lexer.token.*;
 
 import java.io.IOException;
 

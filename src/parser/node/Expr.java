@@ -1,6 +1,6 @@
 package parser.node;
 
-import lexer.Token.*;
+import lexer.token.*;
 import parser.Parser;
 import parser.ParserException;
 

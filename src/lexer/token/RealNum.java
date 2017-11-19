@@ -1,4 +1,4 @@
-package lexer.Token;
+package lexer.token;
 
 /**
  * 实数

@@ -1,7 +1,7 @@
 package parser.stmt;
 
-import lexer.Token.BinaryOperator;
-import lexer.Token.Tag;
+import lexer.token.BinaryOperator;
+import lexer.token.Tag;
 import parser.Parser;
 import parser.node.Expr;
 import parser.node.Stmt;

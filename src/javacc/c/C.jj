@@ -1,9 +1,9 @@
 /*
 
-  javaCC.C grammar defintion for use with javaCC
+  javacc.c grammar defintion for use with javacc
   Contributed by Doug South (dsouth@squirrel.com.au) 21/3/97
 
-  This parser assumes that the javaCC.C source file has been preprocessed : all
+  This parser assumes that the javacc.c source file has been preprocessed : all
   #includes have been included and all macros have been expanded. I accomplish
   this with "gcc -P -E <source file> > <output file>".
 
@@ -17,28 +17,28 @@
   This grammar also prints out all the types defined while parsing the file. This
   is done via a call to printTypes() when the parser is complete. If you do not want
   this, just comment out the printTypes() method call in the production rule
-  TranslationUnit(), which BTW is the root node for parsing a javaCC.C source file.
+  TranslationUnit(), which BTW is the root node for parsing a javacc.c source file.
 
   I have not in anyway extensively tested this grammar, in fact it is barely tested,
-  but I imagine it is better to have a starting point for a javaCC.C grammar other than from
+  but I imagine it is better to have a starting point for a javacc.c grammar other than from
   scratch. It has not been optimized in anyway, my main aim was to get a parser that
   works. Lookahead may not be optimum at choice points and may even be insufficient at
   times. I choose to err on the side of not optimum if I made a choice at all.
 
   If you use this grammar, I would appreciate hearing from you. I will try to maintain
   this grammar to the best of my ability, but at this point in time, this is only a side
-  hobby (unless someone wants to pay me for doing javaCC work!). In that regards, I am
+  hobby (unless someone wants to pay me for doing javacc work!). In that regards, I am
   interested in hearing bugs and comments.
 
   TODO:
 
-    Insert the appropriate code to enable javaCC.C source trees from this grammar.
+    Insert the appropriate code to enable javacc.c source trees from this grammar.
 
 =============================================
 3/2/06: Modified by Tom Copeland
 - STRING_LITERAL now handles embedded escaped newlines, thanks to J.Chris Findlay for the patch
-- Works with javaCC 4.0
-- Preprocessor directives are now simply SKIP'd, so no need to run javaCC.C files through GCC first
+- Works with javacc 4.0
+- Preprocessor directives are now simply SKIP'd, so no need to run javacc.c files through GCC first
 
   */
 
@@ -84,32 +84,32 @@ import java.util.*;
 	    types.add("__signed");
 
       if(args.length == 0){
-        System.out.println("javaCC.C Parser Version 0.1Alpha:  Reading from standard input . . .");
+        System.out.println("javacc.c Parser Version 0.1Alpha:  Reading from standard input . . .");
         parser = new CParser(System.in);
       }
       else if(args.length == 1){
-        System.out.println("javaCC.C Parser Version 0.1Alpha:  Reading from file " + args[0] + " . . ." );
+        System.out.println("javacc.c Parser Version 0.1Alpha:  Reading from file " + args[0] + " . . ." );
       try {
         parser = new CParser(new java.io.FileInputStream(args[0]));
       }
       catch(java.io.FileNotFoundException e){
-        System.out.println("javaCC.C Parser Version 0.1:  File " + args[0] + " not found.");
+        System.out.println("javacc.c Parser Version 0.1:  File " + args[0] + " not found.");
         return ;
         }
       }
       else {
-        System.out.println("javaCC.C Parser Version 0.1Alpha:  Usage is one of:");
-        System.out.println("         java javaCC.C.CParser < inputfile");
+        System.out.println("javacc.c Parser Version 0.1Alpha:  Usage is one of:");
+        System.out.println("         java javacc.c.CParser < inputfile");
         System.out.println("OR");
-        System.out.println("         java javaCC.C.CParser inputfile");
+        System.out.println("         java javacc.c.CParser inputfile");
         return ;
       }
       try {
         parser.TranslationUnit();
-        System.out.println("javaCC.C Parser Version 0.1Alpha:  Java program parsed successfully.");
+        System.out.println("javacc.c Parser Version 0.1Alpha:  Java program parsed successfully.");
       }
       catch(ParseException e){
-        System.out.println("javaCC.C Parser Version 0.1Alpha:  Encountered errors during parse.");
+        System.out.println("javacc.c Parser Version 0.1Alpha:  Encountered errors during parse.");
         e.printStackTrace();
       }
     }

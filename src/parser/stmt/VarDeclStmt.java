@@ -1,7 +1,7 @@
 package parser.stmt;
 
-import lexer.Token.Tag;
-import lexer.Token.Word;
+import lexer.token.Tag;
+import lexer.token.Word;
 import parser.Parser;
 import parser.node.Stmt;
 

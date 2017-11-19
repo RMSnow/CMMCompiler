@@ -1,4 +1,4 @@
-package lexer.Token;
+package lexer.token;
 
 /**
  * 二目符号
