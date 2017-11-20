@@ -1,7 +1,23 @@
 package demo.inter.boolExpr;
 
+import demo.inter.expr.Expr;
+import demo.lexer.Token;
+
 /**
- * Created by snow on 19/11/2017.
+ * 逻辑运算符Or
  */
-public class Or extends Logical{
+public class Or extends Logical {
+    protected Or(Token tok, Expr x1, Expr x2) {
+        super(tok, x1, x2);
+    }
+
+    @Override
+    public void jumping(int t, int f) {
+        int label = t != 0 ? t : newlabel();
+        expr1.jumping(label, 0);
+        expr2.jumping(t, f);
+        if (t == 0) {
+            emitlabel(label);
+        }
+    }
 }

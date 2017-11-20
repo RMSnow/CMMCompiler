@@ -1,9 +1,14 @@
 <component name="ProjectDictionaryState">
   <dictionary name="snow">
     <words>
+      <w>arith</w>
       <w>decl</w>
       <w>decls</w>
+      <w>emitjumps</w>
+      <w>emitlabel</w>
       <w>ident</w>
+      <w>lexline</w>
+      <w>newlabel</w>
       <w>readch</w>
       <w>stmts</w>
     </words>

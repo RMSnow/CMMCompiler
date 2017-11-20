@@ -3,7 +3,24 @@ package demo.inter.stmt;
 import demo.inter.expr.Node;
 
 /**
- * Created by snow on 19/11/2017.
+ * 语句构造的基类
  */
-public class Stmt extends Node{
+public class Stmt extends Node {
+    public Stmt() {
+    }
+
+    public static Stmt Null = new Stmt();
+
+    /**
+     * 三地址码的生成
+     *
+     * @param b 语句开始处的标号
+     * @param a 语句下一条指令的标号
+     */
+    public void gen(int b, int a) {
+    }
+
+    int after = 0;      //保存语句的下一条指令的标号
+
+    public static Stmt Enclosing = Stmt.Null;       //用于break语句
 }

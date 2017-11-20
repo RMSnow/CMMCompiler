@@ -18,7 +18,7 @@ public class Type extends Word {
             Int = new Type("int", Tag.BASIC, 4),
             Float = new Type("float", Tag.BASIC, 8),
             Char = new Type("char", Tag.BASIC, 1),
-            Bool = new Type("boolExpr", Tag.BASIC, 1);
+            Bool = new Type("bool", Tag.BASIC, 1);
 
     /**
      * 在数字类型Char/Int/Float之间可以进行类型转换

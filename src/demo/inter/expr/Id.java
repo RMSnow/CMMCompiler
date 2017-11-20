@@ -1,8 +1,16 @@
 package demo.inter.expr;
 
+import demo.lexer.Word;
+import demo.symbols.Type;
+
 /**
- * Created by snow on 19/11/2017.
+ * 标识符
  */
-public class Id extends Expr{
-    public int offset;
+public class Id extends Expr {
+    public int offset;      //相对地址
+
+    public Id(Word id, Type p, int b) {
+        super(id, p);
+        offset = b;
+    }
 }

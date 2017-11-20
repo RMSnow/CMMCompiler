@@ -1,7 +1,22 @@
 package demo.inter.boolExpr;
 
+import demo.inter.expr.Expr;
+import demo.lexer.Token;
+
 /**
- * Created by snow on 19/11/2017.
+ * 逻辑运算符Not
  */
-public class Not extends Logical{
+public class Not extends Logical {
+    protected Not(Token tok, Expr x2) {
+        super(tok, x2, x2);
+    }
+
+    @Override
+    public void jumping(int t, int f) {
+        expr2.jumping(f, t);
+    }
+
+    public String toString() {
+        return op.toString() + " " + expr2.toString();
+    }
 }
