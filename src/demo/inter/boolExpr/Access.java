@@ -21,16 +21,16 @@ public class Access extends Op {
     }
 
     @Override
-    public Expr gen(){
+    public Expr gen() {
         return new Access(array, index.reduce(), type);
     }
 
     @Override
-    public void jumping(int t, int f){
-        emitjumps(reduce().toString(),t,f);
+    public void jumping(int t, int f) {
+        emitjumps(reduce().toString(), t, f);
     }
 
-    public String toString(){
+    public String toString() {
         return array.toString() + "[" + index.toString() + "]";
     }
 }

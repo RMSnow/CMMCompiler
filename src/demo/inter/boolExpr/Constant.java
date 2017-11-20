@@ -11,6 +11,10 @@ import demo.symbols.Type;
  */
 public class Constant extends Expr {
 
+    public static final Constant
+            True = new Constant(Word.True, Type.Bool),
+            False = new Constant(Word.False, Type.Bool);
+
     public Constant(Token tok, Type p) {
         super(tok, p);
     }
@@ -18,10 +22,6 @@ public class Constant extends Expr {
     public Constant(int i) {     //为一个整数创建常量对象
         super(new Num(i), Type.Int);
     }
-
-    public static final Constant
-            True = new Constant(Word.True, Type.Bool),
-            False = new Constant(Word.False, Type.Bool);
 
     @Override
     public void jumping(int t, int f) {

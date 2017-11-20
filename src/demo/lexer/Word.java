@@ -6,17 +6,6 @@ package demo.lexer;
  * （2）中间代码中运算符的书写形式，比如单目减号。如：源文本中-2的中间形式是minus 2
  */
 public class Word extends Token {
-    public String lexeme = "";
-
-    public Word(String s, int tag) {
-        super(tag);
-        lexeme = s;
-    }
-
-    public String toString() {
-        return lexeme;
-    }
-
     public static final Word
             and = new Word("&&", Tag.AND),
             or = new Word("||", Tag.OR),
@@ -28,4 +17,14 @@ public class Word extends Token {
             True = new Word("true", Tag.TRUE),
             False = new Word("false", Tag.FALSE),
             temp = new Word("t", Tag.TEMP);
+    public String lexeme = "";
+
+    public Word(String s, int tag) {
+        super(tag);
+        lexeme = s;
+    }
+
+    public String toString() {
+        return lexeme;
+    }
 }

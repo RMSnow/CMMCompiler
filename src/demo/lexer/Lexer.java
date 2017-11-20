@@ -11,10 +11,6 @@ public class Lexer {
     char peek = ' ';
     Hashtable words = new Hashtable();
 
-    void reserve(Word w) {
-        words.put(w.lexeme, w);
-    }
-
     public Lexer() {
         //选定的关键字
         reserve(new Word("if", Tag.IF));
@@ -31,6 +27,10 @@ public class Lexer {
 //        reserve(Type.Char);
 //        reserve(Type.Bool);
 //        reserve(Type.Float);
+    }
+
+    void reserve(Word w) {
+        words.put(w.lexeme, w);
     }
 
     void readch() throws IOException {

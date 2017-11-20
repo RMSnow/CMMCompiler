@@ -49,12 +49,12 @@ public class Expr extends Node {
             emit("if " + test + " goto L" + t);
         } else if (f != 0) {
             emit("if false " + test + " goto L" + f);
-        }else{
+        } else {
             return;     //不作反应，因为t和f都直接穿越
         }
     }
 
-    public String toString(){
+    public String toString() {
         return op.toString();
     }
 

@@ -7,6 +7,11 @@ import demo.lexer.Word;
  * 基本类型
  */
 public class Type extends Word {
+    public static final Type
+            Int = new Type("int", Tag.BASIC, 4),
+            Float = new Type("float", Tag.BASIC, 8),
+            Char = new Type("char", Tag.BASIC, 1),
+            Bool = new Type("bool", Tag.BASIC, 1);
     public int width = 0;       //用于存储分配
 
     public Type(String s, int tag, int w) {
@@ -14,14 +19,9 @@ public class Type extends Word {
         width = w;
     }
 
-    public static final Type
-            Int = new Type("int", Tag.BASIC, 4),
-            Float = new Type("float", Tag.BASIC, 8),
-            Char = new Type("char", Tag.BASIC, 1),
-            Bool = new Type("bool", Tag.BASIC, 1);
-
     /**
      * 在数字类型Char/Int/Float之间可以进行类型转换
+     *
      * @param p
      * @return
      */
@@ -35,6 +35,7 @@ public class Type extends Word {
 
     /**
      * 当一个算术运算符应用于两个数字类型时，结果类型是这两个类型的max值
+     *
      * @param p1
      * @param p2
      * @return

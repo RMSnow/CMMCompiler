@@ -9,8 +9,8 @@ import java.util.Hashtable;
  * 符号表
  */
 public class Env {
-    private Hashtable table;
     protected Env prev;
+    private Hashtable table;
 
     public Env(Env n) {
         table = new Hashtable();

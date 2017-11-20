@@ -6,10 +6,12 @@ import demo.inter.expr.Node;
  * 语句构造的基类
  */
 public class Stmt extends Node {
+    public static Stmt Null = new Stmt();
+    public static Stmt Enclosing = Stmt.Null;       //用于break语句
+    int after = 0;      //保存语句的下一条指令的标号
+
     public Stmt() {
     }
-
-    public static Stmt Null = new Stmt();
 
     /**
      * 三地址码的生成
@@ -19,8 +21,4 @@ public class Stmt extends Node {
      */
     public void gen(int b, int a) {
     }
-
-    int after = 0;      //保存语句的下一条指令的标号
-
-    public static Stmt Enclosing = Stmt.Null;       //用于break语句
 }

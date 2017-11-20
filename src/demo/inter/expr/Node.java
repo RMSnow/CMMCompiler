@@ -6,6 +6,11 @@ import demo.lexer.Lexer;
  * 抽象语法树的结点
  */
 public class Node {
+    /**
+     * 生成三地址代码
+     */
+
+    static int labels = 0;
     int lexline = 0;        //保存了本结点对应的构造在源程序中的行号
 
     protected Node() {
@@ -17,12 +22,6 @@ public class Node {
     public void error(String s) {
         throw new Error("near line " + lexline + ": " + s);
     }
-
-    /**
-     * 生成三地址代码
-     */
-
-    static int labels = 0;
 
     public int newlabel() {
         return ++labels;
