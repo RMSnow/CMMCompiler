@@ -4,6 +4,7 @@
       <w>arith</w>
       <w>decl</w>
       <w>decls</w>
+      <w>donode</w>
       <w>emitjumps</w>
       <w>emitlabel</w>
       <w>ident</w>
@@ -11,6 +12,7 @@
       <w>newlabel</w>
       <w>readch</w>
       <w>stmts</w>
+      <w>whilenode</w>
     </words>
   </dictionary>
 </component>

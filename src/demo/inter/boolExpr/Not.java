@@ -7,7 +7,7 @@ import demo.lexer.Token;
  * 逻辑运算符Not
  */
 public class Not extends Logical {
-    protected Not(Token tok, Expr x2) {
+    public Not(Token tok, Expr x2) {
         super(tok, x2, x2);
     }
 

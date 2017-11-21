@@ -1,5 +1,7 @@
 package demo.lexer;
 
+import demo.symbols.Type;
+
 import java.io.IOException;
 import java.util.Hashtable;
 
@@ -23,10 +25,10 @@ public class Lexer {
 
         //在其他地方定义的对象的词素
         //TODO: symbols
-//        reserve(Type.INT);
-//        reserve(Type.Char);
-//        reserve(Type.Bool);
-//        reserve(Type.Float);
+        reserve(Type.Int);
+        reserve(Type.Char);
+        reserve(Type.Bool);
+        reserve(Type.Float);
     }
 
     void reserve(Word w) {

@@ -7,7 +7,7 @@ import demo.lexer.Token;
  * 逻辑运算符And
  */
 public class And extends Logical {
-    protected And(Token tok, Expr x1, Expr x2) {
+    public And(Token tok, Expr x1, Expr x2) {
         super(tok, x1, x2);
     }
 

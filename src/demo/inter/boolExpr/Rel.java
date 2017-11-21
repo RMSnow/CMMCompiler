@@ -9,7 +9,7 @@ import demo.symbols.Type;
  * 关系运算符
  */
 public class Rel extends Logical {
-    protected Rel(Token tok, Expr x1, Expr x2) {
+    public Rel(Token tok, Expr x1, Expr x2) {
         super(tok, x1, x2);
     }
 

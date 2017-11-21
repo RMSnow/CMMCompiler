@@ -7,7 +7,7 @@ import demo.lexer.Token;
  * 逻辑运算符Or
  */
 public class Or extends Logical {
-    protected Or(Token tok, Expr x1, Expr x2) {
+    public Or(Token tok, Expr x1, Expr x2) {
         super(tok, x1, x2);
     }
 

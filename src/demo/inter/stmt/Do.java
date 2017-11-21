@@ -1,6 +1,7 @@
 package demo.inter.stmt;
 
 import demo.inter.expr.Expr;
+import demo.symbols.Type;
 
 /**
  * Do语句
@@ -12,6 +13,14 @@ public class Do extends Stmt {
     public Do() {
         expr = null;
         stmt = null;
+    }
+
+    public void init(Stmt s, Expr x){
+        expr = x;
+        stmt = s;
+        if(expr.type != Type.Bool){
+            expr.error("boolean required in do");
+        }
     }
 
     @Override
