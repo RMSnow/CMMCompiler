@@ -1111,7 +1111,7 @@ null, null, null, null, null, null, null, "\143\157\156\164\151\156\165\145",
 "\76\75", "\74\74", "\76\76", "\53", "\55", "\57", "\45", "\53\53", "\55\55", "\176", 
 "\41", "\56", "\55\76", };
 
-/** lexer state names. */
+/** v1.lexer state names. */
 public static final String[] lexStateNames = {
    "DEFAULT",
    "PREPROCESSOR_OUTPUT",
@@ -1141,7 +1141,7 @@ static protected char curChar;
 /** Constructor. */
 public CParserTokenManager(SimpleCharStream stream){
    if (input_stream != null)
-      throw new TokenMgrError("ERROR: Second call to constructor of static lexer. You must use ReInit() to initialize the static variables.", TokenMgrError.STATIC_LEXER_ERROR);
+      throw new TokenMgrError("ERROR: Second call to constructor of static v1.lexer. You must use ReInit() to initialize the static variables.", TokenMgrError.STATIC_LEXER_ERROR);
    input_stream = stream;
 }
 
@@ -1151,7 +1151,7 @@ public CParserTokenManager(SimpleCharStream stream, int lexState){
    SwitchTo(lexState);
 }
 
-/** Reinitialise parser. */
+/** Reinitialise v1.parser. */
 static public void ReInit(SimpleCharStream stream)
 {
    jjmatchedPos = jjnewStateCnt = 0;
@@ -1167,7 +1167,7 @@ static private void ReInitRounds()
       jjrounds[i] = 0x80000000;
 }
 
-/** Reinitialise parser. */
+/** Reinitialise v1.parser. */
 static public void ReInit(SimpleCharStream stream, int lexState)
 {
    ReInit(stream);

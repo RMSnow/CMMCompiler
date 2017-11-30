@@ -3,25 +3,25 @@
   javacc.c grammar defintion for use with javacc
   Contributed by Doug South (dsouth@squirrel.com.au) 21/3/97
 
-  This parser assumes that the javacc.c source file has been preprocessed : all
+  This v1.parser assumes that the javacc.c source file has been preprocessed : all
   #includes have been included and all macros have been expanded. I accomplish
   this with "gcc -P -E <source file> > <output file>".
 
   There is a problem with compiler specific types, such as __signed, __const,
-  __inline__, etc. These types can be added as typedef types before the parser
+  __inline__, etc. These types can be added as typedef types before the v1.parser
   is run on a file. See main() for an example. I have also found a strange little
   compiler specific "type" if you can call it that. It is __attribute__, but it
   does not seem to be used as a type. I found that just deleting the __attribute__
   and the following "offensive" code works.
 
   This grammar also prints out all the types defined while parsing the file. This
-  is done via a call to printTypes() when the parser is complete. If you do not want
+  is done via a call to printTypes() when the v1.parser is complete. If you do not want
   this, just comment out the printTypes() method call in the production rule
   TranslationUnit(), which BTW is the root node for parsing a javacc.c source file.
 
   I have not in anyway extensively tested this grammar, in fact it is barely tested,
   but I imagine it is better to have a starting point for a javacc.c grammar other than from
-  scratch. It has not been optimized in anyway, my main aim was to get a parser that
+  scratch. It has not been optimized in anyway, my main aim was to get a v1.parser that
   works. Lookahead may not be optimum at choice points and may even be insufficient at
   times. I choose to err on the side of not optimum if I made a choice at all.
 
@@ -51,7 +51,7 @@ import java.util.*;
     // Hastable for storing typedef types
     private static Set types = new HashSet();
 
-    // Stack for determining when the parser
+    // Stack for determining when the v1.parser
     // is parsing a typdef definition.
     private static Stack typedefParsingStack = new Stack();
 
@@ -73,7 +73,7 @@ import java.util.*;
       }
     }
 
-    // Run the parser
+    // Run the v1.parser
     public static void main ( String args [ ] ) {
       CParser parser ;
 

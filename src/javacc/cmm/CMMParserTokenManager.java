@@ -524,7 +524,7 @@ public static final String[] jjstrLiteralImages = {
 "\73", "\133\135", "\133", "\135", "\75", "\53", "\55", "\76", "\74", "\75\75", 
 "\74\76", "\76\75", "\74\75", "\52", "\57", };
 
-/** lexer state names. */
+/** v1.lexer state names. */
 public static final String[] lexStateNames = {
    "DEFAULT",
 };
@@ -541,7 +541,7 @@ static protected char curChar;
 /** Constructor. */
 public CMMParserTokenManager(SimpleCharStream stream){
    if (input_stream != null)
-      throw new TokenMgrError("ERROR: Second call to constructor of static lexer. You must use ReInit() to initialize the static variables.", TokenMgrError.STATIC_LEXER_ERROR);
+      throw new TokenMgrError("ERROR: Second call to constructor of static v1.lexer. You must use ReInit() to initialize the static variables.", TokenMgrError.STATIC_LEXER_ERROR);
    input_stream = stream;
 }
 
@@ -551,7 +551,7 @@ public CMMParserTokenManager(SimpleCharStream stream, int lexState){
    SwitchTo(lexState);
 }
 
-/** Reinitialise parser. */
+/** Reinitialise v1.parser. */
 static public void ReInit(SimpleCharStream stream)
 {
    jjmatchedPos = jjnewStateCnt = 0;
@@ -567,7 +567,7 @@ static private void ReInitRounds()
       jjrounds[i] = 0x80000000;
 }
 
-/** Reinitialise parser. */
+/** Reinitialise v1.parser. */
 static public void ReInit(SimpleCharStream stream, int lexState)
 {
    ReInit(stream);
