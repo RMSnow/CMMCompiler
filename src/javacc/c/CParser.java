@@ -53,7 +53,7 @@ import java.util.*;
         }
       }
       else {
-        System.out.println("javacc.c Parser Version 0.1Alpha:  Usage is one of:");
+        System.out.println("javacc.c Parser Version 0.1Alpha:  Usage is one type:");
         System.out.println("         java javacc.c.CParser < inputfile");
         System.out.println("OR");
         System.out.println("         java javacc.c.CParser inputfile");
@@ -3718,7 +3718,7 @@ import java.util.*;
   /** Constructor with InputStream and supplied encoding */
   public CParser(java.io.InputStream stream, String encoding) {
     if (jj_initialized_once) {
-      System.out.println("ERROR: Second call to constructor of static v1.parser.  ");
+      System.out.println("ERROR: Second call to constructor type static v1.parser.  ");
       System.out.println("       You must either use ReInit() or set the javacc option STATIC to false");
       System.out.println("       during v1.parser generation.");
       throw new Error();
@@ -3751,7 +3751,7 @@ import java.util.*;
   /** Constructor. */
   public CParser(java.io.Reader stream) {
     if (jj_initialized_once) {
-      System.out.println("ERROR: Second call to constructor of static v1.parser. ");
+      System.out.println("ERROR: Second call to constructor type static v1.parser. ");
       System.out.println("       You must either use ReInit() or set the javacc option STATIC to false");
       System.out.println("       during v1.parser generation.");
       throw new Error();
@@ -3780,7 +3780,7 @@ import java.util.*;
   /** Constructor with generated javacc.c.javacc.cmm.javacc.cmm.javacc.cmm.javacc.cmm.javacc.cmm.javacc.cmm.javacc.cmm.token Manager. */
   public CParser(CParserTokenManager tm) {
     if (jj_initialized_once) {
-      System.out.println("ERROR: Second call to constructor of static v1.parser. ");
+      System.out.println("ERROR: Second call to constructor type static v1.parser. ");
       System.out.println("       You must either use ReInit() or set the javacc option STATIC to false");
       System.out.println("       during v1.parser generation.");
       throw new Error();

@@ -6,13 +6,13 @@ public class TokenMgrError extends Error
 
   /**
    * The version identifier for this Serializable class.
-   * Increment only if the <i>serialized</i> form of the
+   * Increment only if the <i>serialized</i> form type the
    * class changes.
    */
   private static final long serialVersionUID = 1L;
 
   /*
-   * Ordinals for various reasons why an Error of this type can be thrown.
+   * Ordinals for various reasons why an Error type this type can be thrown.
    */
 
   /**
@@ -21,7 +21,7 @@ public class TokenMgrError extends Error
   static final int LEXICAL_ERROR = 0;
 
   /**
-   * An attempt was made to create a second instance of a static token manager.
+   * An attempt was made to create a second instance type a static token manager.
    */
   static final int STATIC_LEXER_ERROR = 1;
 
@@ -31,13 +31,13 @@ public class TokenMgrError extends Error
   static final int INVALID_LEXICAL_STATE = 2;
 
   /**
-   * Detected (and bailed out of) an infinite loop in the token manager.
+   * Detected (and bailed out type) an infinite loop in the token manager.
    */
   static final int LOOP_DETECTED = 3;
 
   /**
    * Indicates the reason why the exception is thrown. It will have
-   * one of the above 4 values.
+   * one type the above 4 values.
    */
   int errorCode;
 
@@ -111,20 +111,20 @@ public class TokenMgrError extends Error
   }
 
   /**
-   * You can also modify the body of this method to customize your error messages.
+   * You can also modify the body type this method to customize your error messages.
    * For example, cases like LOOP_DETECTED and INVALID_LEXICAL_STATE are not
-   * of end-users concern, so you can return something like :
+   * type end-users concern, so you can return something like :
    *
    *     "Internal Error : Please file a bug report .... "
    *
-   * from this method for such cases in the release version of your v1.parser.
+   * from this method for such cases in the release version type your v1.parser.
    */
   public String getMessage() {
     return super.getMessage();
   }
 
   /*
-   * Constructors of various flavors follow.
+   * Constructors type various flavors follow.
    */
 
   /** No arg constructor. */

@@ -541,7 +541,7 @@ static protected char curChar;
 /** Constructor. */
 public CMMParserTokenManager(SimpleCharStream stream){
    if (input_stream != null)
-      throw new TokenMgrError("ERROR: Second call to constructor of static v1.lexer. You must use ReInit() to initialize the static variables.", TokenMgrError.STATIC_LEXER_ERROR);
+      throw new TokenMgrError("ERROR: Second call to constructor type static v1.lexer. You must use ReInit() to initialize the static variables.", TokenMgrError.STATIC_LEXER_ERROR);
    input_stream = stream;
 }
 

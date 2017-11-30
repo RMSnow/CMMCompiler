@@ -797,7 +797,7 @@ public class CMMParser implements CMMParserConstants {
   /** Constructor with InputStream and supplied encoding */
   public CMMParser(java.io.InputStream stream, String encoding) {
     if (jj_initialized_once) {
-      System.out.println("ERROR: Second call to constructor of static v1.parser.  ");
+      System.out.println("ERROR: Second call to constructor type static v1.parser.  ");
       System.out.println("       You must either use ReInit() or set the javacc option STATIC to false");
       System.out.println("       during v1.parser generation.");
       throw new Error();
@@ -830,7 +830,7 @@ public class CMMParser implements CMMParserConstants {
   /** Constructor. */
   public CMMParser(java.io.Reader stream) {
     if (jj_initialized_once) {
-      System.out.println("ERROR: Second call to constructor of static v1.parser. ");
+      System.out.println("ERROR: Second call to constructor type static v1.parser. ");
       System.out.println("       You must either use ReInit() or set the javacc option STATIC to false");
       System.out.println("       during v1.parser generation.");
       throw new Error();
@@ -859,7 +859,7 @@ public class CMMParser implements CMMParserConstants {
   /** Constructor with generated javacc.cmm.token Manager. */
   public CMMParser(CMMParserTokenManager tm) {
     if (jj_initialized_once) {
-      System.out.println("ERROR: Second call to constructor of static v1.parser. ");
+      System.out.println("ERROR: Second call to constructor type static v1.parser. ");
       System.out.println("       You must either use ReInit() or set the javacc option STATIC to false");
       System.out.println("       during v1.parser generation.");
       throw new Error();

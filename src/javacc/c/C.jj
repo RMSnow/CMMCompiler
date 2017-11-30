@@ -98,7 +98,7 @@ import java.util.*;
         }
       }
       else {
-        System.out.println("javacc.c Parser Version 0.1Alpha:  Usage is one of:");
+        System.out.println("javacc.c Parser Version 0.1Alpha:  Usage is one type:");
         System.out.println("         java javacc.c.CParser < inputfile");
         System.out.println("OR");
         System.out.println("         java javacc.c.CParser inputfile");
