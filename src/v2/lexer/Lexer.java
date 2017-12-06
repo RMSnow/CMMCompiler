@@ -13,7 +13,19 @@ public class Lexer {
     char peek = ' ';
     Hashtable words = new Hashtable();
 
+    private String textOfEditor;        //编辑区文本
+    private int indexOfString = 0;      //编辑区字符串索引
+
     public Lexer() {
+        init();
+    }
+
+    public Lexer(String textOfEditor) {
+        init();
+        this.textOfEditor = textOfEditor;
+    }
+
+    public void init() {
         //保留字
         reserve(new Word("if", Tag.IF));
         reserve(new Word("else", Tag.ELSE));
@@ -37,7 +49,8 @@ public class Lexer {
     }
 
     void readch() throws IOException {
-        peek = (char) System.in.read();
+        //peek = (char) System.in.read();
+        peek = getCharFromText();
     }
 
     boolean readch(char c) throws IOException {
@@ -49,6 +62,14 @@ public class Lexer {
         return true;
     }
 
+    //TODO: String.charAt()
+    char getCharFromText() {
+        if (indexOfString == textOfEditor.length()) {
+            return '#';
+        }
+        return textOfEditor.charAt(indexOfString++);
+    }
+
     public Token scan() throws IOException {
         //略过所有的空白符
         for (; ; readch()) {
@@ -56,7 +77,11 @@ public class Lexer {
                 continue;
             } else if (peek == '\n') {
                 line++;
-            } else {
+            }
+            else if (peek == '#') {
+                return null;
+            }
+            else {
                 break;
             }
         }

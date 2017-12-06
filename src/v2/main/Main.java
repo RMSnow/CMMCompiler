@@ -1,4 +1,4 @@
-package v2.inter.main;
+package v2.main;
 
 import v2.lexer.Lexer;
 import v2.parser.Parser;
