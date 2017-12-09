@@ -4,10 +4,6 @@ import v2.lexer.Lexer;
 import v2.parser.Parser;
 
 import javax.swing.*;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Element;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,10 +19,36 @@ public class Index {
     private JPanel home;
     private JTextPane editTextPane;
     private JTextPane consoleTextPane;
-    private JButton runButton;
     private JTextArea lineTextArea;
+    private JButton runButton;
 
-    public Index() {
+    public Index(int frameWidth, int frameHeight) {
+        editTextPane.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (editTextPane.getText().equals("Editor")) {
+                    editTextPane.setText("");
+                }
+
+                //TODO: 采用多线程，检测焦点变化并改变行号
+
+//                while (true) {
+//                    int caretPosition = editTextPane.getCaretPosition();
+//                    Element root = editTextPane.getDocument().getDefaultRootElement();
+//
+//                    int line = root.getElementIndex(caretPosition) + 1;
+//                    lineTextArea.append(line + "\n");
+//                }
+
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (editTextPane.getText().equals("")) {
+                    editTextPane.setText("Editor");
+                }
+            }
+        });
         runButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -55,35 +77,27 @@ public class Index {
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
-
             }
         });
-        editTextPane.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (editTextPane.getText().equals("Editor")) {
-                    editTextPane.setText("");
-                }
 
-                //TODO: 采用多线程，检测焦点变化并改变行号
+        //TODO: 设置每个区域的大小
+        double editPaneWidthScale = 0.9;
+        double editPaneHeightScale = 0.7;
 
-//                while (true) {
-//                    int caretPosition = editTextPane.getCaretPosition();
-//                    Element root = editTextPane.getDocument().getDefaultRootElement();
-//
-//                    int line = root.getElementIndex(caretPosition) + 1;
-//                    lineTextArea.append(line + "\n");
-//                }
+//        editTextPane.setSize((int) (frameWidth * editPaneWidthScale),
+//                (int) (frameHeight * editPaneHeightScale));
+//        consoleTextPane.setSize((int) (frameWidth * 1.0),
+//                (int) (frameHeight * (1 - editPaneHeightScale)));
+//        lineTextArea.setSize((int) (frameWidth * (1 - editPaneWidthScale)),
+//                (int) (frameHeight * editPaneHeightScale));
 
-            }
+        editTextPane.setPreferredSize(new Dimension((int) (frameWidth * editPaneWidthScale),
+                (int) (frameHeight * editPaneHeightScale)));
+        consoleTextPane.setPreferredSize(new Dimension((int) (frameWidth * 1.0),
+                (int) (frameHeight * (1 - editPaneHeightScale))));
+        lineTextArea.setPreferredSize(new Dimension((int) (frameWidth * (1 - editPaneWidthScale)),
+                (int) (frameHeight * editPaneHeightScale)));
 
-            @Override
-            public void focusLost(FocusEvent e) {
-                if (editTextPane.getText().equals("")) {
-                    editTextPane.setText("Editor");
-                }
-            }
-        });
     }
 
     // 截获控制台信息并输出至consoleTextPane
@@ -121,24 +135,30 @@ public class Index {
     }
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Index");
-        frame.setContentPane(new Index().home);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension screenSize = toolkit.getScreenSize();
         int screenWidth = screenSize.width;
         int screeHeight = screenSize.height;
 
-        frame.setTitle("Home");
-        frame.setLocationByPlatform(true);
-        frame.setBounds(new Double(screenWidth * 0.1).intValue(),
-                new Double(screeHeight * 0.1).intValue(),
-                new Double(screenWidth * 0.7).intValue(),
-                new Double(screeHeight * 0.7).intValue());
+        //设置框架大小
+        int x = (int) (screenWidth * 0.05);
+        int y = (int) (screeHeight * 0.1);
+        int width = (int) (screenWidth * 0.9);
+        int height = (int) (screeHeight * 0.9);
 
-        //TODO: 设置每个区域的大小
+        JFrame frame = new JFrame("Index") {
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(width, height);
+            }
+        };
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        frame.setTitle("Home");
+        frame.setLocation(x, y);
+
+        frame.setContentPane(new Index(width, height).home);
+        frame.pack();
 
         frame.setVisible(true);
     }

@@ -13,6 +13,8 @@ public class Lexer {
     char peek = ' ';
     Hashtable words = new Hashtable();
 
+    public boolean isScanFromGUI = true;
+
     private String textOfEditor;        //编辑区文本
     private int indexOfString = 0;      //编辑区字符串索引
 
@@ -49,8 +51,11 @@ public class Lexer {
     }
 
     void readch() throws IOException {
-        //peek = (char) System.in.read();
-        peek = getCharFromText();
+        if (isScanFromGUI){
+            peek = getCharFromText();
+        }else {
+            peek = (char) System.in.read();
+        }
     }
 
     boolean readch(char c) throws IOException {
@@ -62,7 +67,6 @@ public class Lexer {
         return true;
     }
 
-    //TODO: String.charAt()
     char getCharFromText() {
         if (indexOfString == textOfEditor.length()) {
             return '#';

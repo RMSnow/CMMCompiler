@@ -16,6 +16,9 @@ public class Main {
      */
     public static void main(String[] args) throws IOException {
         Lexer lexer = new Lexer();
+        //设置从命令行读入
+        lexer.isScanFromGUI = false;
+
         Parser parser = new Parser(lexer);
         parser.program();
         System.out.write('\n');

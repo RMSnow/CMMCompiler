@@ -1,3 +1,5 @@
+//test-0
+
 {
     int i; int j; float v; float x; float[100] a;
     while(true){
@@ -6,4 +8,21 @@
         if(i >= j) break;
         x = a[i]; a[i] = a[j]; a[j] = x;
     }
+}
+
+//test-1
+
+float[100] a;
+
+while(true){
+    int i;
+    float v;
+    do i = i + 1; while (a[i] < v);
+
+    int j;
+    do j = j - 1; while (a[j] > v);
+    if(i >= j) break;
+
+    float x;
+    x = a[i]; a[i] = a[j]; a[j] = x;
 }
