@@ -21,8 +21,7 @@ public class ColouringTask implements Runnable{
 
     public void run() {
         try {
-            // 这里就是对字符进行着色
-            doc.setCharacterAttributes(pos, len, style, true);
+            doc.setCharacterAttributes(pos, len, style, true);      //对字符进行着色
         } catch (Exception e) {
         }
     }

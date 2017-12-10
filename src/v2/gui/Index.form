@@ -20,8 +20,9 @@
     <children>
       <component id="ad152" class="javax.swing.JTextPane" binding="editTextPane" default-binding="true">
         <constraints>
-          <grid row="2" column="1" row-span="1" col-span="2" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="50"/>
+          <grid row="2" column="0" row-span="1" col-span="3" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <minimum-size width="150" height="250"/>
+            <preferred-size width="150" height="250"/>
           </grid>
         </constraints>
         <properties>
@@ -57,14 +58,6 @@
         <properties>
           <text value="Editor"/>
         </properties>
-      </component>
-      <component id="7d213" class="javax.swing.JTextArea" binding="lineTextArea">
-        <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="10" height="50"/>
-          </grid>
-        </constraints>
-        <properties/>
       </component>
       <toolbar id="517e2">
         <constraints>

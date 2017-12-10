@@ -1,5 +1,6 @@
 package v2.gui;
 
+import v2.gui.doc.DocListener;
 import v2.lexer.Lexer;
 import v2.parser.Parser;
 
@@ -10,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.io.*;
+import java.util.ArrayList;
 
 
 /**
@@ -21,6 +23,8 @@ public class Index {
     private JTextPane consoleTextPane;
     private JTextArea lineTextArea;
     private JButton runButton;
+    private JPanel linePane;
+    private ArrayList<JLabel> lineLabels = new ArrayList<>();
 
     public Index(int frameWidth, int frameHeight) {
         editTextPane.addFocusListener(new FocusAdapter() {
@@ -53,7 +57,7 @@ public class Index {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //控制台初始化
-                initConsoleTextPane();
+//                initConsoleTextPane();
 
                 //TODO: 设置token的颜色
 //                Style normal = editTextPane.addStyle("normal",null);
@@ -84,55 +88,54 @@ public class Index {
         double editPaneWidthScale = 0.9;
         double editPaneHeightScale = 0.7;
 
-//        editTextPane.setSize((int) (frameWidth * editPaneWidthScale),
-//                (int) (frameHeight * editPaneHeightScale));
-//        consoleTextPane.setSize((int) (frameWidth * 1.0),
-//                (int) (frameHeight * (1 - editPaneHeightScale)));
-//        lineTextArea.setSize((int) (frameWidth * (1 - editPaneWidthScale)),
-//                (int) (frameHeight * editPaneHeightScale));
-
         editTextPane.setPreferredSize(new Dimension((int) (frameWidth * editPaneWidthScale),
                 (int) (frameHeight * editPaneHeightScale)));
         consoleTextPane.setPreferredSize(new Dimension((int) (frameWidth * 1.0),
                 (int) (frameHeight * (1 - editPaneHeightScale))));
-        lineTextArea.setPreferredSize(new Dimension((int) (frameWidth * (1 - editPaneWidthScale)),
-                (int) (frameHeight * editPaneHeightScale)));
+//        lineTextArea.setPreferredSize(new Dimension((int) (frameWidth * (1 - editPaneWidthScale)),
+//                (int) (frameHeight * editPaneHeightScale)));
+
+        //TODO: 为editTextPane添加监听，进行语法高亮 + 行号？
+
+//        editTextPane.getDocument().addDocumentListener(
+//                new DocListener(editTextPane,this));
+
 
     }
 
     // 截获控制台信息并输出至consoleTextPane
-    public void initConsoleTextPane() {
-        try {
-            final LoopedStreams ls;
-            ls = new LoopedStreams();
-
-            // 重定向System.out和System.err
-            PrintStream ps = new PrintStream(ls.getOutputStream());
-            System.setOut(ps);
-            System.setErr(ps);
-
-            InputStream inputStream = ls.getInputStream();
-            final BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-            new Thread(new Runnable() {
-                public void run() {
-                    StringBuffer buffer = new StringBuffer();
-
-                    try {
-                        consoleTextPane.setText("");
-                        String s;
-                        while ((s = br.readLine()) != null) {
-                            consoleTextPane.setText(consoleTextPane.getText() + s + "\n");
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    public void initConsoleTextPane() {
+//        try {
+//            final LoopedStreams ls;
+//            ls = new LoopedStreams();
+//
+//            // 重定向System.out和System.err
+//            PrintStream ps = new PrintStream(ls.getOutputStream());
+//            System.setOut(ps);
+//            System.setErr(ps);
+//
+//            InputStream inputStream = ls.getInputStream();
+//            final BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+//            new Thread(new Runnable() {
+//                public void run() {
+//                    StringBuffer buffer = new StringBuffer();
+//
+//                    try {
+//                        consoleTextPane.setText("");
+//                        String s;
+//                        while ((s = br.readLine()) != null) {
+//                            consoleTextPane.setText(consoleTextPane.getText() + s + "\n");
+//                        }
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }).start();
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public static void main(String[] args) {
         Toolkit toolkit = Toolkit.getDefaultToolkit();

@@ -1,10 +1,13 @@
 package v2.gui.doc;
 
+import v2.gui.Home;
+
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 /**
@@ -12,6 +15,7 @@ import java.util.Hashtable;
  * （1）关键词高亮
  * （2）记录行号
  */
+//TODO: (1)修改样式 (2)处理注释
 public class DocListener implements DocumentListener {
     /*
         Token：
@@ -31,8 +35,13 @@ public class DocListener implements DocumentListener {
     private Style idStyle;
     private Style annotationStyle;
     private Style normalStyle;
+    private Style errorStyle;
 
-    public DocListener(JTextPane editor) {
+    private Home home;
+
+    public DocListener(JTextPane editor, Home home) {
+        this.home = home;
+
         symbolStyle = ((StyledDocument) editor.getDocument()).addStyle("symbolStyle", null);
         basicTypeStyle = ((StyledDocument) editor.getDocument()).addStyle("basicTypeStyle", null);
         definedWordsStyle = ((StyledDocument) editor.getDocument()).addStyle("definedWordsStyle", null);
@@ -40,15 +49,17 @@ public class DocListener implements DocumentListener {
         idStyle = ((StyledDocument) editor.getDocument()).addStyle("idStyle", null);
         annotationStyle = ((StyledDocument) editor.getDocument()).addStyle("annotationStyle", null);
         normalStyle = ((StyledDocument) editor.getDocument()).addStyle("normalStyle", null);
+        errorStyle = ((StyledDocument) editor.getDocument()).addStyle("errorStyle", null);
 
         //设置颜色
-        StyleConstants.setForeground(symbolStyle, Color.yellow);
-        StyleConstants.setForeground(basicTypeStyle, Color.pink);
-        StyleConstants.setForeground(definedWordsStyle, Color.blue);
-        StyleConstants.setForeground(constantsStyle, Color.green);
-        StyleConstants.setForeground(idStyle, Color.black);
-        StyleConstants.setForeground(annotationStyle, Color.gray);
-        StyleConstants.setForeground(normalStyle,Color.black);
+        StyleConstants.setForeground(symbolStyle, new Color(246, 247, 238));
+        StyleConstants.setForeground(basicTypeStyle, new Color(37, 213, 239));
+        StyleConstants.setForeground(definedWordsStyle, new Color(210, 4, 89));
+        StyleConstants.setForeground(constantsStyle, new Color(163, 88, 222));
+        StyleConstants.setForeground(idStyle, new Color(246, 247, 238));
+        StyleConstants.setForeground(annotationStyle, new Color(91, 76, 52));
+        StyleConstants.setForeground(normalStyle, new Color(246, 247, 238));
+        StyleConstants.setForeground(errorStyle, new Color(190, 29, 41));
 
         //Symbol
         styleHashtable.put("||", symbolStyle);
@@ -86,6 +97,32 @@ public class DocListener implements DocumentListener {
 
     }
 
+
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+        try {
+            colouring((StyledDocument) e.getDocument(), e.getOffset(), e.getLength());
+            home.updateLineNum();
+        } catch (BadLocationException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+        try {
+            colouring((StyledDocument) e.getDocument(), e.getOffset(), 0);
+            home.updateLineNum();
+        } catch (BadLocationException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+
+    }
+
     public void colouring(StyledDocument doc, int pos, int len) throws BadLocationException {
         // 取得插入或者删除后影响到的单词.
         // 例如"public"在b后插入一个空格, 就变成了:"pub lic", 这时就有两个单词要处理:"pub"和"lic"
@@ -96,10 +133,15 @@ public class DocListener implements DocumentListener {
         char ch;
         while (start < end) {
             ch = getCharAt(doc, start);
-            if (Character.isLetter(ch) || ch == '_') {
+            if (Character.isLetter(ch) || ch == '_') {      //处理Word
                 // 如果是以字母或者下划线开头, 说明是单词
                 // pos为处理后的最后一个下标
+
+                //TODO: 标识符的定义
                 start = colouringWord(doc, start);
+
+            } else if (Character.isDigit(ch)) {      //处理数字
+                start = colouringNum(doc, start);
             } else {
                 SwingUtilities.invokeLater(new ColouringTask(doc, start, 1, normalStyle));
                 ++start;
@@ -119,18 +161,56 @@ public class DocListener implements DocumentListener {
         int wordEnd = indexOfWordEnd(doc, pos);
         String word = doc.getText(pos, wordEnd - pos);
 
-        //TODO: to complete
-//        if (keywords.contains(word)) {
-//            // 如果是关键字, 就进行关键字的着色, 否则使用普通的着色.
-//            // 这里有一点要注意, 在insertUpdate和removeUpdate的方法调用的过程中, 不能修改doc的属性.
-//            // 但我们又要达到能够修改doc的属性, 所以把此任务放到这个方法的外面去执行.
-//            // 实现这一目的, 可以使用新线程, 但放到swing的事件队列里去处理更轻便一点.
-//            SwingUtilities.invokeLater(new SyntaxHighlighter.ColouringTask(doc, pos, wordEnd - pos, keywordStyle));
-//        } else {
-//            SwingUtilities.invokeLater(new SyntaxHighlighter.ColouringTask(doc, pos, wordEnd - pos, normalStyle));
-//        }
+        if (styleHashtable.containsKey(word)) {
+            // 如果是关键字, 就进行关键字的着色, 否则使用普通的着色.
+            // 这里有一点要注意, 在insertUpdate和removeUpdate的方法调用的过程中, 不能修改doc的属性.
+            // 但我们又要达到能够修改doc的属性, 所以把此任务放到这个方法的外面去执行.
+            // 实现这一目的, 可以使用新线程, 但放到swing的事件队列里去处理更轻便一点.
+            SwingUtilities.invokeLater(new ColouringTask(doc, pos, wordEnd - pos, styleHashtable.get(word)));
+        } else {
+            SwingUtilities.invokeLater(new ColouringTask(doc, pos, wordEnd - pos, normalStyle));
+        }
 
         return wordEnd;
+    }
+
+    //TODO: 处理数字
+    public int colouringNum(StyledDocument doc, int pos) throws BadLocationException {
+        int numEnd = indexOfWordEnd(doc, pos);
+        if (getCharAt(doc, numEnd) == '.') {
+            numEnd = indexOfWordEnd(doc, numEnd + 1);
+        }
+
+        String num = doc.getText(pos, numEnd - pos);
+
+        int index = 0;
+        char c;
+        do {
+            c = num.charAt(index);
+            index++;
+        } while (Character.isDigit(c) && index < num.length());
+
+        if (Character.isDigit(c) && index == num.length()) {
+            SwingUtilities.invokeLater(new ColouringTask(doc, pos, numEnd - pos, constantsStyle));
+            return numEnd;
+        }
+
+        //real num
+        if (c == '.') {
+            index++;
+            for (; index < num.length(); index++) {
+                c = num.charAt(index);
+                if (!Character.isDigit(c)) {
+                    SwingUtilities.invokeLater(new ColouringTask(doc, pos, numEnd - pos, errorStyle));
+                    return numEnd;
+                }
+            }
+            SwingUtilities.invokeLater(new ColouringTask(doc, pos, numEnd - pos, constantsStyle));
+        } else {
+            SwingUtilities.invokeLater(new ColouringTask(doc, pos, numEnd - pos, errorStyle));
+        }
+
+        return numEnd;
     }
 
     /**
@@ -157,7 +237,6 @@ public class DocListener implements DocumentListener {
      * @throws BadLocationException
      */
     public int indexOfWordStart(Document doc, int pos) throws BadLocationException {
-        // 从pos开始向前找到第一个非单词字符.
         for (; pos > 0 && isWordCharacter(doc, pos - 1); --pos) ;
 
         return pos;
@@ -172,7 +251,6 @@ public class DocListener implements DocumentListener {
      * @throws BadLocationException
      */
     public int indexOfWordEnd(Document doc, int pos) throws BadLocationException {
-        // 从pos开始向前找到第一个非单词字符.
         for (; isWordCharacter(doc, pos); ++pos) ;
 
         return pos;
@@ -192,20 +270,5 @@ public class DocListener implements DocumentListener {
             return true;
         }
         return false;
-    }
-
-    @Override
-    public void insertUpdate(DocumentEvent e) {
-
-    }
-
-    @Override
-    public void removeUpdate(DocumentEvent e) {
-
-    }
-
-    @Override
-    public void changedUpdate(DocumentEvent e) {
-
     }
 }
