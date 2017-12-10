@@ -11,7 +11,7 @@ public class Type extends Word {
             Int = new Type("int", Tag.BASIC, 4),
             Float = new Type("float", Tag.BASIC, 8),
             Char = new Type("char", Tag.BASIC, 1),
-            Bool = new Type("bool", Tag.BASIC, 1);
+            Bool = new Type("boolean", Tag.BASIC, 1);
     public int width = 0;       //用于存储分配
 
     public Type(String s, int tag, int w) {

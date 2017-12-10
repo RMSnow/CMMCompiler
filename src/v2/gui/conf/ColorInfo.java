@@ -18,5 +18,4 @@ public class ColorInfo {
     public static Color annotationColor = new Color(126, 145, 144);
     public static Color normalColor = new Color(46, 74, 88);
     public static Color errorColor = new Color(190, 29, 41);
-
 }
