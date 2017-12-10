@@ -16,6 +16,12 @@ public class SizeInfo {
     public static int frameWidth;
     public static int frameHeight;
 
+    //lineList
+    public static int lineCellHeight = (int) (FontInfo.codeFont.getSize() * 1.35);
+    public static int lineCellWidth = 40;
+
+    //component
+    public static Dimension editPaneDimension = new Dimension(800, 250);
 
     static {
         //frame

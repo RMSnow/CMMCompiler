@@ -1,12 +1,14 @@
 package v2.gui;
 
-import v2.gui.doc.DocListener;
+import v2.gui.conf.ColorInfo;
+import v2.gui.conf.FontInfo;
 import v2.gui.conf.SizeInfo;
+import v2.gui.doc.DocListener;
 import v2.lexer.Lexer;
 import v2.parser.Parser;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,8 +31,8 @@ public class Home extends JFrame {
         this.setLayout(new BorderLayout());
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        this.setForeground(new Color(254, 244, 218));
-        this.setBackground(new Color(254, 244, 218));
+//        this.setForeground(new Color(254, 244, 218));
+//        this.setBackground(new Color(254, 244, 218));
 
         init();
     }
@@ -49,23 +51,22 @@ public class Home extends JFrame {
                 super.setSize(d);
             }
         };
-//        editTextPane.setForeground(new Color(29, 30, 25));
-        editTextPane.setBackground(new Color(253, 243, 216));
+        editTextPane.setBackground(ColorInfo.editAreaColor);
 
         editScrollPane = new JScrollPane(editTextPane);
 
         lineList = new DefaultListModel();
         JList lineNumList = new JList(lineList);
-        lineNumList.setBorder(new EmptyBorder(3, 0, 0, 0));
-        lineNumList.setFixedCellWidth(35);
-        lineNumList.setFixedCellHeight(17);
-        lineNumList.setForeground(new Color(29, 30, 25));
-        lineNumList.setBackground(new Color(228, 228, 228));
-        lineNumList.setFont(new Font("Courier New", Font.PLAIN, 14));
+        //lineNumList.setBorder(new LineBorder(new Color(152, 164, 155)));
+        lineNumList.setFixedCellWidth(SizeInfo.lineCellWidth);
+        lineNumList.setFixedCellHeight(SizeInfo.lineCellHeight);
+        lineNumList.setBackground(ColorInfo.lineAreaColor);
+        lineNumList.setFont(FontInfo.lineNumFont);
+
         editScrollPane.setRowHeaderView(lineNumList);
         this.add(editScrollPane, BorderLayout.CENTER);
-        editTextPane.setFont(new Font("Courier New", Font.PLAIN, 14));
 
+        editTextPane.setFont(FontInfo.codeFont);
         editTextPane.getDocument().addDocumentListener(new DocListener(editTextPane, this));
 
         consoleTextPane = new JTextPane() {
@@ -81,7 +82,9 @@ public class Home extends JFrame {
                 super.setSize(d);
             }
         };
-        consoleTextPane.setPreferredSize(new Dimension(800, 150));
+        consoleTextPane.setPreferredSize(SizeInfo.editPaneDimension);
+        consoleTextPane.setFont(FontInfo.consoleFont);
+        consoleTextPane.setBackground(ColorInfo.consoleAreaColor);
         consoleScrollPane = new JScrollPane(consoleTextPane);
         this.add(consoleScrollPane, BorderLayout.SOUTH);
 

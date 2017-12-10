@@ -1,13 +1,12 @@
 package v2.gui.doc;
 
 import v2.gui.Home;
+import v2.gui.conf.ColorInfo;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.*;
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.Hashtable;
 
 /**
@@ -52,14 +51,22 @@ public class DocListener implements DocumentListener {
         errorStyle = ((StyledDocument) editor.getDocument()).addStyle("errorStyle", null);
 
         //设置颜色
-        StyleConstants.setForeground(symbolStyle, new Color(246, 247, 238));
-        StyleConstants.setForeground(basicTypeStyle, new Color(37, 213, 239));
-        StyleConstants.setForeground(definedWordsStyle, new Color(210, 4, 89));
-        StyleConstants.setForeground(constantsStyle, new Color(163, 88, 222));
-        StyleConstants.setForeground(idStyle, new Color(246, 247, 238));
-        StyleConstants.setForeground(annotationStyle, new Color(91, 76, 52));
-        StyleConstants.setForeground(normalStyle, new Color(246, 247, 238));
-        StyleConstants.setForeground(errorStyle, new Color(190, 29, 41));
+        StyleConstants.setForeground(symbolStyle, ColorInfo.symbolColor);
+        StyleConstants.setForeground(basicTypeStyle, ColorInfo.basicTypeColor);
+        StyleConstants.setForeground(definedWordsStyle, ColorInfo.defineWordsColor);
+        StyleConstants.setForeground(constantsStyle, ColorInfo.constantsColor);
+        StyleConstants.setForeground(idStyle, ColorInfo.idColor);
+        StyleConstants.setForeground(annotationStyle, ColorInfo.annotationColor);
+        StyleConstants.setForeground(normalStyle, ColorInfo.normalColor);
+        StyleConstants.setForeground(errorStyle, ColorInfo.errorColor);
+
+        //设置字体
+        StyleConstants.FontConstants.setUnderline(errorStyle, true);
+        StyleConstants.FontConstants.setItalic(errorStyle, true);
+        StyleConstants.FontConstants.setItalic(annotationStyle, true);
+        StyleConstants.FontConstants.setBold(definedWordsStyle, true);
+        StyleConstants.FontConstants.setBold(basicTypeStyle, true);
+        StyleConstants.FontConstants.setBold(constantsStyle, true);
 
         //Symbol
         styleHashtable.put("||", symbolStyle);
