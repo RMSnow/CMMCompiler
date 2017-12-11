@@ -49,4 +49,6 @@ public class Tag {
     public final static int WRITE = 277;
 
     public final static int END = 278;      //输入结束符
+
+    public final static int ANNOTATION = 279;   //注释
 }

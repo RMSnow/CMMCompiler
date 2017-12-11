@@ -128,6 +128,18 @@ public class Lexer {
                 } else {
                     return new Token('>');
                 }
+            case '/':
+                if (readch('/')){
+                    do {
+                        readch();
+                    }while (peek != '\n');
+
+                    line++;
+                    peek = ' ';
+                    return scan();
+                }else {
+                    return new Token('/');
+                }
         }
 
         //处理数字

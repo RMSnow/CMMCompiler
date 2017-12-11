@@ -1,6 +1,5 @@
-package v2.gui.doc;
+package v2.gui;
 
-import v2.gui.Home;
 import v2.gui.conf.ColorInfo;
 
 import javax.swing.*;

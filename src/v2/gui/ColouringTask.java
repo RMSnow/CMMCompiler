@@ -1,4 +1,4 @@
-package v2.gui.doc;
+package v2.gui;
 
 import javax.swing.text.Style;
 import javax.swing.text.StyledDocument;

@@ -1,10 +1,8 @@
 package v2.parser;
 
+import v2.inter.Node;
 import v2.inter.bool.*;
-import v2.inter.expr.Arith;
-import v2.inter.expr.Expr;
-import v2.inter.expr.Id;
-import v2.inter.expr.Unary;
+import v2.inter.expr.*;
 import v2.inter.stmt.*;
 import v2.lexer.*;
 import v2.symbols.Array;
@@ -23,6 +21,11 @@ public class Parser {
     private Token look;     // 向前看词法单元
 
     public Parser(Lexer l) throws IOException {
+        //静态变量初始化
+        Lexer.line = 1;
+        Node.labels = 0;
+        Temp.count = 0;
+
         lex = l;
         move();
     }

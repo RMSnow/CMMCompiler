@@ -18,7 +18,7 @@ public class LexerEntry {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-        guidance();
+        //guidance();
 
         if (args.length != 2 || (args[0].equals("scan") != true)) {
             System.out.println("INVALID USAGE.");
@@ -62,7 +62,7 @@ public class LexerEntry {
     public static void guidance() {
         System.out.println("------------------------使用方法------------------------");
         System.out.println("1.键盘输入：输入命令\"scan #\"后，在键盘输入代码，\"#\"为输入结束符");
-        System.out.println("2.读取文件：输入命令\"scan [文件名]\"，如：scan test.txt");
+        System.out.println("2.读取文件：输入命令\"scan [文件名]\"，如：scan case0.txt");
         System.out.println("-------------------------------------------------------");
     }
 

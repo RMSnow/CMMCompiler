@@ -10,7 +10,7 @@ public class Node {
      * 生成三地址代码
      */
 
-    static int labels = 0;
+    public static int labels = 0;
     int lexline = 0;        //保存了本结点对应的构造在源程序中的行号
 
     protected Node() {

@@ -3,12 +3,10 @@ package v2.gui;
 import v2.gui.conf.ColorInfo;
 import v2.gui.conf.FontInfo;
 import v2.gui.conf.SizeInfo;
-import v2.gui.doc.DocListener;
 import v2.lexer.Lexer;
 import v2.parser.Parser;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -88,7 +86,6 @@ public class Home extends JFrame {
         consoleScrollPane = new JScrollPane(consoleTextPane);
         this.add(consoleScrollPane, BorderLayout.SOUTH);
 
-        //TODO: test running
         JButton runButton = new JButton("Run");
         runButton.addActionListener(new ActionListener() {
             @Override
