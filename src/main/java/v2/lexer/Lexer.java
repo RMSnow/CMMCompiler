@@ -82,8 +82,8 @@ public class Lexer {
             } else if (peek == '\n') {
                 line++;
             }
-            else if (peek == '#') {
-                return null;
+            else if (peek == '#') {     //输入结束符
+                return new Token(Tag.END);
             }
             else {
                 break;
