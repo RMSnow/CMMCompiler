@@ -8,11 +8,14 @@ import v2.lexer.*;
 import v2.symbols.Array;
 import v2.symbols.Env;
 import v2.symbols.Type;
+import v3.Conf;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
- * 语法分析器-v3
+ * 语法分析器-v3：更改了v2的部分语法
  */
 public class Parser {
     Env top = null;     // 当前或顶层的符号表
@@ -20,11 +23,15 @@ public class Parser {
     private Lexer lex;      // 词法分析器
     private Token look;     // 向前看词法单元
 
+    public static PrintWriter out;      //输出至文件
+
     public Parser(Lexer l) throws IOException {
         //静态变量初始化
         Lexer.line = 1;
         Node.labels = 0;
         Temp.count = 0;
+
+        out = new PrintWriter(Conf.interFile);
 
         lex = l;
         move();
@@ -53,12 +60,14 @@ public class Parser {
         top = new Env(top);
         Stmt s = stmts();
 
-        //生成三地址码
+        //生成三地址码，并输出至文件
         int begin = s.newlabel();
         int after = s.newlabel();
         s.emitlabel(begin);
         s.gen(begin, after);
         s.emitlabel(after);
+
+        out.flush();
     }
 
     /**
@@ -230,6 +239,13 @@ public class Parser {
         }
     }
 
+    /**
+     * 数组类型, eg: int[5] a;
+     *
+     * @param p
+     * @return
+     * @throws IOException
+     */
     Type dims(Type p) throws IOException {
         match('[');
         Token tok = look;
@@ -239,6 +255,7 @@ public class Parser {
         if (look.tag == '[') {
             p = dims(p);
         }
+
         return new Array(((Num) tok).value, p);     //多维数组------------
     }
 
@@ -360,7 +377,7 @@ public class Parser {
         while (look.tag == '+' || look.tag == '-') {
             Token tok = look;
             move();
-            x = new Arith(tok, x, unary());
+            x = new Arith(tok, x, term());
         }
         return x;
     }
@@ -473,14 +490,8 @@ public class Parser {
      * @return
      * @throws IOException
      */
-    Access offset(Id arrayIdent) throws IOException {       // I -> [E] | [E] I
-//        // 继承id
-//        Expr i;
-//        Expr w;
-//        Expr t1, t2;
-//        Expr loc;
-
-        Type arrayType = arrayIdent.type;       //数组类型
+    Access offset(Id arrayIdent) throws IOException {
+        Array arrayType = (Array) arrayIdent.type;       //数组类型
 
         match('[');
         Expr offsetExpr = bool();
@@ -490,9 +501,7 @@ public class Parser {
         if (offsetExpr.type != Type.Int) {
             error("The offset of array must be Int.");
         }
-
-        //TODO: 数据访问越界
-        
+        //TODO: 数据访问越界-涉及到取值：这是代码生成阶段。
 
         return new Access(arrayIdent, offsetExpr, accessType);
 

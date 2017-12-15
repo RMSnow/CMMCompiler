@@ -1,6 +1,7 @@
 package v2.inter;
 
 import v2.lexer.Lexer;
+import v3.parser.Parser;
 
 /**
  * 抽象语法树的结点
@@ -28,11 +29,13 @@ public class Node {
     }
 
     public void emitlabel(int i) {
-        System.out.print("L" + i + ":");
+        //System.out.print("L" + i + ":");
+        Parser.out.print("L" + i + ":");
     }
 
     public void emit(String s) {
-        System.out.println("\t" + s);
+        //System.out.println("\t" + s);
+        Parser.out.println("\t" + s);
     }
 
 }
