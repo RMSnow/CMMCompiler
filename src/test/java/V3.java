@@ -1,7 +1,9 @@
 import v2.lexer.Lexer;
+import v3.Conf;
 import v3.parser.Parser;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 /**
  * Created by snow on 14/12/2017.
@@ -19,5 +21,10 @@ public class V3 {
 
         Parser parser = new Parser(lexer);
         parser.program();
+
+        Scanner scanner = new Scanner(Conf.interFile);
+        while (scanner.hasNext()){
+            System.out.println(scanner.nextLine());
+        }
     }
 }

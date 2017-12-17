@@ -5,6 +5,7 @@ import v2.inter.expr.Op;
 import v2.inter.expr.Temp;
 import v2.lexer.Token;
 import v2.symbols.Type;
+import v3.parser.Parser;
 
 /**
  * 逻辑运算符基类: expr1 Logical expr2
@@ -33,6 +34,8 @@ public class Logical extends Op{
 
     @Override
     public Expr gen() {
+        super.recordLineNum();
+
         int f = newlabel();
         int a = newlabel();
         Temp temp = new Temp(type);
@@ -47,5 +50,12 @@ public class Logical extends Op{
 
     public String toString() {
         return expr1.toString() + " " + op.toString() + " " + expr2.toString();
+    }
+
+    @Override
+    //临时变量不输出行号
+    public void emit(String s){
+        Parser.out.printf("\t" + s);
+        Parser.out.println();
     }
 }

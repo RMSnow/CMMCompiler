@@ -12,16 +12,15 @@ public class Node {
      */
 
     public static int labels = 0;
-    int lexline = 0;        //保存了本结点对应的构造在源程序中的行号
+    protected int lexLine = 0;        //保存了本结点对应的构造在源程序中的行号
+    protected boolean printLine = false;
 
     protected Node() {
-        lexline = Lexer.line;
-
-        //TODO: 中间代码生成过程中构造新结点时跟踪行号
+        lexLine = Lexer.line;
     }
 
     public void error(String s) {
-        throw new Error("near line " + lexline + ": " + s);
+        throw new Error("near line " + lexLine + ": " + s);
     }
 
     public int newlabel() {
@@ -29,13 +28,24 @@ public class Node {
     }
 
     public void emitlabel(int i) {
-        //System.out.print("L" + i + ":");
-        Parser.out.print("L" + i + ":");
+        Parser.out.println("L" + i + ":");
     }
 
     public void emit(String s) {
-        //System.out.println("\t" + s);
-        Parser.out.println("\t" + s);
+        Parser.out.printf("\t" + s);
+
+        if (!printLine) {
+            Parser.out.printf("\t>>> Line " + lexLine);
+            printLine = true;       //当行号变化的时候，改为false
+        }
+
+        Parser.out.println();
     }
 
+    protected void recordLineNum(){
+        if (lexLine != Lexer.line){
+            lexLine = Lexer.line;
+            printLine = false;
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package v2.inter.expr;
 
+import v2.lexer.Lexer;
 import v2.lexer.Word;
 import v2.symbols.Type;
 
@@ -18,5 +19,11 @@ public class Temp extends Expr {
     public String toString() {
         return "t" + num;
     }
+
+//    @Override
+//    //临时变量不记录行号
+//    public Expr gen() {
+//        return this;
+//    }
 
 }

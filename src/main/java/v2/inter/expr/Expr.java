@@ -1,6 +1,7 @@
 package v2.inter.expr;
 
 import v2.inter.Node;
+import v2.lexer.Lexer;
 import v2.lexer.Token;
 import v2.symbols.Type;
 
@@ -22,6 +23,7 @@ public class Expr extends Node{
      * @return 一个"项"，该项可以成为一个三地址指令的右部
      */
     public Expr gen() {
+        recordLineNum();
         return this;
     }
 
@@ -44,12 +46,12 @@ public class Expr extends Node{
 
     public void emitjumps(String test, int t, int f) {
         if (t != 0 && f != 0) {
-            emit("if " + test + " goto L" + t);
-            emit("goto L" + f);
+            super.emit("if " + test + " goto L" + t);
+            super.emit("goto L" + f);
         } else if (t != 0) {
-            emit("if " + test + " goto L" + t);
+            super.emit("if " + test + " goto L" + t);
         } else if (f != 0) {
-            emit("if false " + test + " goto L" + f);
+            super.emit("if false " + test + " goto L" + f);
         } else {
             return;     //不作反应，因为t和f都直接穿越
         }

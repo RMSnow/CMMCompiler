@@ -22,6 +22,7 @@ public class Access extends Op{
 
     @Override
     public Expr gen() {
+        super.recordLineNum();
         return new Access(array, index.reduce(), type);
     }
 

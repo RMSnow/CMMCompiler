@@ -22,6 +22,7 @@ public class Arith extends Op {
 
     @Override
     public Expr gen() {
+        recordLineNum();
         return new Arith(op, expr1.reduce(), expr2.reduce());
     }
 

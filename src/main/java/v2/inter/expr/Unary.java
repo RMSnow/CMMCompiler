@@ -21,6 +21,7 @@ public class Unary extends Op {
 
     @Override
     public Expr gen() {
+        recordLineNum();
         return new Unary(op, expr.reduce());
     }
 

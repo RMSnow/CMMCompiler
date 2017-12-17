@@ -128,7 +128,7 @@ public class Lexer {
                 } else {
                     return new Token('>');
                 }
-            case '/':
+            case '/':       //处理单行注释----------------注意行号
                 if (readch('/')){
                     do {
                         readch();
