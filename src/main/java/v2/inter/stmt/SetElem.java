@@ -21,6 +21,9 @@ public class SetElem extends Stmt{
         if (check(x.type, expr.type) == null) {
             error("type error");
         }
+
+        //endLine
+        endLine = expr.lexLine;
     }
 
     public Type check(Type p1, Type p2) {

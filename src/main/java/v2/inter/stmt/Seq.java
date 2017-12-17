@@ -10,6 +10,9 @@ public class Seq extends Stmt{
     public Seq(Stmt s1, Stmt s2) {
         stmt1 = s1;
         stmt2 = s2;
+
+        //endLine
+        endLine = s2.endLine;
     }
 
     @Override

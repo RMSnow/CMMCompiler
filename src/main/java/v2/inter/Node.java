@@ -12,7 +12,7 @@ public class Node {
      */
 
     public static int labels = 0;
-    protected int lexLine = 0;        //保存了本结点对应的构造在源程序中的行号
+    public int lexLine = 0;        //保存了本结点对应的构造在源程序中的行号
     protected boolean printLine = false;
 
     protected Node() {

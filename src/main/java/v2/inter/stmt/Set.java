@@ -17,6 +17,9 @@ public class Set extends Stmt{
         if (check(id.type, expr.type) == null) {
             error("type error");
         }
+
+        //endLine
+        endLine = expr.lexLine;
     }
 
     public Type check(Type p1, Type p2) {
