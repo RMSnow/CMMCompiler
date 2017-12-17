@@ -18,7 +18,7 @@ import java.io.PrintWriter;
  * 语法分析器-v3：更改了v2的部分语法
  */
 public class Parser {
-    Env top = null;     // 当前或顶层的符号表
+    public Env tempEnv = null;     // 当前的符号表
     int used = 0;       // 用于变量声明的存储位置
     private Lexer lex;      // 词法分析器
     private Token look;     // 向前看词法单元
@@ -56,8 +56,8 @@ public class Parser {
     /**
      * 语法分析的入口: Program -> Stmts
      */
-    public void program() throws IOException {
-        top = new Env(top);
+    public File program() throws IOException {
+//        tempEnv = new Env(null, null);
         Stmt s = stmts();
 
         //生成三地址码，并输出至文件
@@ -68,6 +68,8 @@ public class Parser {
         s.emitlabel(after);
 
         out.flush();
+
+        return Conf.interFile;
     }
 
     /**
@@ -191,15 +193,15 @@ public class Parser {
         match('{');
 
         //新建符号表结点
-        Env savedEnv = top;
-        top = new Env(top);
+//        tempEnv.next = new Env(tempEnv, null);
+//        tempEnv = tempEnv.next;
 
         Stmt s = stmts();
 
         match('}');
 
-        //删除符号表结点
-        top = savedEnv;
+        //返回原来的符号表结点
+//        tempEnv = tempEnv.prev;
 
         return s;
     }
@@ -217,7 +219,7 @@ public class Parser {
 
         //向符号表中添加信息
         Id id = new Id((Word) tok, p, used);
-        top.put(tok, id);
+        tempEnv.put(tok, id);
         used = used + p.width;
 
         return Stmt.Null;
@@ -270,7 +272,7 @@ public class Parser {
         Stmt stmt;
         Token t = look;
         match(Tag.ID);
-        Id id = top.get(t);
+        Id id = tempEnv.get(t);
 
         if (id == null) {
             error(t.toString() + " undeclared");
@@ -464,7 +466,7 @@ public class Parser {
 
             case Tag.ID:
                 String s = look.toString();
-                Id id = top.get(look);
+                Id id = tempEnv.get(look);
 
                 if (id == null) {
                     error(look.toString() + " undeclared");

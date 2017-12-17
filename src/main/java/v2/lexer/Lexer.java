@@ -13,7 +13,7 @@ public class Lexer {
     char peek = ' ';
     Hashtable words = new Hashtable();
 
-    public boolean isScanFromGUI = true;
+    public boolean isScanFromGUI = false;
 
     private String textOfEditor;        //编辑区文本
     private int indexOfString = 0;      //编辑区字符串索引
@@ -25,6 +25,7 @@ public class Lexer {
     public Lexer(String textOfEditor) {
         init();
         this.textOfEditor = textOfEditor;
+        isScanFromGUI = true;
     }
 
     public void init() {
